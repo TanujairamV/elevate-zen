@@ -186,14 +186,14 @@ class _Timeline extends StatelessWidget {
         _TimelineItem(
           icon: Icons.medical_services_outlined,
           iconBackground: const Color(0xFF5E70CE),
-          child: const _AppointmentCard(),
           lineHeight: 35,
+          child: const _AppointmentCard(),
         ),
         _TimelineItem(
           icon: Icons.water_drop_outlined,
           iconBackground: const Color(0xFFB5C9FF),
-          child: const _LabCard(),
           lineHeight: 35,
+          child: const _LabCard(),
         ),
         const SizedBox(height: 10),
         const _YearDivider(
@@ -203,8 +203,8 @@ class _Timeline extends StatelessWidget {
         _TimelineItem(
           icon: Icons.medication_outlined,
           iconBackground: const Color(0xFF6B7BA5),
-          child: const _PrescriptionCard(),
           lineHeight: 35,
+          child: const _PrescriptionCard(),
         ),
         const SizedBox(height: 10),
         const _YearDivider(
@@ -215,8 +215,8 @@ class _Timeline extends StatelessWidget {
           icon: Icons.medical_information_outlined,
           iconBackground: const Color(0xFFFFD1CD),
           iconColor: const Color(0xFFB71C1C),
-          child: const _DiagnosisCard(),
           lineHeight: 0,
+          child: const _DiagnosisCard(),
         ),
       ],
     );
