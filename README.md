@@ -1,17 +1,156 @@
-# elevate_zen
+Yes. For Windows, use **WinGet** commands instead of download links.
 
-A new Flutter project.
+# Elevate Zen — Developer Installation
 
-## Getting Started
+## 🐧 Linux
 
-This project is a starting point for a Flutter application.
+### 1. Install Git
 
-A few resources to get you started if this is your first Flutter project:
+Arch Linux:
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+```bash
+sudo pacman -S git
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 2. Install Flutter
+
+```bash
+sudo pacman -S flutter
+```
+
+### 3. Install VS Code
+
+```bash
+sudo pacman -S code
+```
+
+Then install the **Flutter** extension from VS Code.
+
+### 4. Clone the project
+
+```bash
+git clone https://github.com/TanujairamV/elevate-zen.git
+cd elevate-zen
+```
+
+### 5. Install dependencies
+
+```bash
+flutter pub get
+```
+
+### 6. Check the environment
+
+```bash
+flutter doctor
+```
+
+### 7. Run the app
+
+```bash
+flutter run -d linux
+```
+
+---
+
+# 🪟 Windows
+
+### 1. Install Git
+
+Open **PowerShell**:
+
+```powershell
+winget install --id Git.Git -e
+```
+
+### 2. Install VS Code
+
+```powershell
+winget install --id Microsoft.VisualStudioCode -e
+```
+
+### 3. Install Flutter
+
+```powershell
+winget install --id Google.Flutter -e
+```
+
+Restart PowerShell after installation.
+
+Verify:
+
+```powershell
+flutter --version
+```
+
+### 4. Install Flutter/Dart extensions
+
+Open VS Code:
+
+```powershell
+code .
+```
+
+Install:
+
+* **Flutter**
+* **Dart**
+
+### 5. Clone the project
+
+```powershell
+git clone https://github.com/TanujairamV/elevate-zen.git
+cd elevate-zen
+```
+
+### 6. Install dependencies
+
+```powershell
+flutter pub get
+```
+
+### 7. Check the environment
+
+```powershell
+flutter doctor
+```
+
+For **Windows desktop**, Flutter requires Visual Studio with the **Desktop development with C++** workload. If `flutter doctor` reports that Visual Studio is missing, install it with:
+
+```powershell
+winget install --id Microsoft.VisualStudio.2022.Community -e
+```
+
+Then install the **Desktop development with C++** workload through Visual Studio Installer.
+
+### 8. Run Elevate Zen
+
+```powershell
+flutter run -d windows
+```
+
+## Quick Start
+
+### Linux
+
+```bash
+sudo pacman -S git flutter code
+git clone https://github.com/TanujairamV/elevate-zen.git
+cd elevate-zen
+flutter pub get
+flutter run -d linux
+```
+
+### Windows
+
+```powershell
+winget install --id Git.Git -e
+winget install --id Microsoft.VisualStudioCode -e
+winget install --id Google.Flutter -e
+git clone https://github.com/TanujairamV/elevate-zen.git
+cd elevate-zen
+flutter pub get
+flutter run -d windows
+```
+
+**Note:** The Windows developer should run `flutter doctor` after installation and resolve any missing Windows desktop dependencies before testing.
