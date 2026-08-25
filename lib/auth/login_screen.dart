@@ -21,6 +21,16 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  void _signIn() {
+    final username = emailController.text.trim().toLowerCase();
+
+    if (username.contains('doctor')) {
+      Navigator.pushReplacementNamed(context, '/doctor');
+    } else {
+      Navigator.pushReplacementNamed(context, '/patient');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -313,7 +323,7 @@ class _LoginScreenState extends State<LoginScreen> {
         SizedBox(
           height: 68,
           child: FilledButton(
-            onPressed: () {},
+            onPressed: _signIn,
             style: FilledButton.styleFrom(
               backgroundColor: const Color(0xFF4D5FBE),
               foregroundColor: Colors.white,
