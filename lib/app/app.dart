@@ -1,26 +1,11 @@
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'router.dart';
 
 class ElevateZenApp extends StatelessWidget {
   const ElevateZenApp({super.key});
 
-  ColorScheme _lightScheme() {
-    return ColorScheme.fromSeed(
-      seedColor: const Color(0xFF4E7A58),
-      brightness: Brightness.light,
-    );
-  }
-
-  ColorScheme _darkScheme() {
-    return ColorScheme.fromSeed(
-      seedColor: const Color(0xFFA7D5AE),
-      brightness: Brightness.dark,
-    );
-  }
-
-  ThemeData _buildTheme(
-    ColorScheme colorScheme,
-  ) {
+  ThemeData _buildTheme(ColorScheme colorScheme) {
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
@@ -151,16 +136,40 @@ class ElevateZenApp extends StatelessWidget {
     );
   }
 
+  ColorScheme _fallbackLightScheme() {
+    return ColorScheme.fromSeed(
+      seedColor: const Color(0xFF4E7A58),
+      brightness: Brightness.light,
+    );
+  }
+
+  ColorScheme _fallbackDarkScheme() {
+    return ColorScheme.fromSeed(
+      seedColor: const Color(0xFF4E7A58),
+      brightness: Brightness.dark,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Elevate Zen',
-      debugShowCheckedModeBanner: false,
-      theme: _buildTheme(_lightScheme()),
-      darkTheme: _buildTheme(_darkScheme()),
-      themeMode: ThemeMode.system,
-      initialRoute: ElevateZenRouter.login,
-      onGenerateRoute: ElevateZenRouter.onGenerateRoute,
+    return DynamicColorBuilder(
+      builder: (lightDynamic, darkDynamic) {
+        final lightScheme =
+            lightDynamic ?? _fallbackLightScheme();
+
+        final darkScheme =
+            darkDynamic ?? _fallbackDarkScheme();
+
+        return MaterialApp(
+          title: 'Elevate Zen',
+          debugShowCheckedModeBanner: false,
+          theme: _buildTheme(lightScheme),
+          darkTheme: _buildTheme(darkScheme),
+          themeMode: ThemeMode.system,
+          initialRoute: ElevateZenRouter.login,
+          onGenerateRoute: ElevateZenRouter.onGenerateRoute,
+        );
+      },
     );
   }
 }
