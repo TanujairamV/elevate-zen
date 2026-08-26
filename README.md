@@ -1,5 +1,3 @@
-Yes. For Windows, use **WinGet** commands instead of download links.
-
 # Elevate Zen — Developer Installation
 
 ## 🐧 Linux
