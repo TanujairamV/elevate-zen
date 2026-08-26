@@ -5,10 +5,13 @@ import '../patient/case_screen.dart';
 import '../patient/chat_screen.dart';
 import '../patient/records_screen.dart';
 import '../patient/previous_records_screen.dart';
+import '../patient/profile_screen.dart';
 import '../doctor/home_screen.dart';
 import '../doctor/patients_screen.dart';
 import '../doctor/patient_screen.dart';
 import '../doctor/profile_screen.dart';
+import '../doctor/chat_screen.dart';
+import '../doctor/scan_screen.dart';
 
 class ElevateZenRouter {
   static const String login = '/';
@@ -66,9 +69,7 @@ class ElevateZenRouter {
 
       case patientProfile:
         return MaterialPageRoute(
-          builder: (_) => const _PlaceholderScreen(
-            title: 'Profile',
-          ),
+          builder: (_) => const PatientProfileScreen(),
           settings: settings,
         );
 
@@ -92,17 +93,13 @@ class ElevateZenRouter {
 
       case doctorScan:
         return MaterialPageRoute(
-          builder: (_) => const _PlaceholderScreen(
-            title: 'Doctor Scan',
-          ),
+          builder: (_) => const DoctorScanScreen(),
           settings: settings,
         );
 
       case doctorChat:
         return MaterialPageRoute(
-          builder: (_) => const _PlaceholderScreen(
-            title: 'Doctor Chat',
-          ),
+          builder: (_) => const DoctorChatScreen(),
           settings: settings,
         );
 
