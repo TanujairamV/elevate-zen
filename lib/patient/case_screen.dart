@@ -1,93 +1,98 @@
 import 'package:flutter/material.dart';
+import '../app/widgets/patient_navigation_bar.dart';
 
 class PatientCaseScreen extends StatelessWidget {
   const PatientCaseScreen({super.key});
 
-  static const primary = Color(0xFF4D5FBE);
-  static const background = Color(0xFFF9F9FD);
-  static const cardColor = Color(0xFFEDEDF1);
-  static const textColor = Color(0xFF17181C);
-  static const secondaryText = Color(0xFF454652);
-
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: background,
-      body: SafeArea(
-        child: Column(
+      backgroundColor: colorScheme.surface,
+      appBar: AppBar(
+        titleSpacing: 28,
+        title: Row(
           children: [
-            const _Header(),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(28, 28, 28, 180),
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _Title(),
-                    SizedBox(height: 14),
-                    _ChiefComplaintCard(),
-                    SizedBox(height: 22),
-                    _MedicalHistoryCard(),
-                    SizedBox(height: 22),
-                    _MedicationsCard(),
-                    SizedBox(height: 22),
-                    _DocumentsCard(),
-                  ],
-                ),
+            Container(
+              width: 46,
+              height: 46,
+              decoration: BoxDecoration(
+                color: colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(14),
               ),
+              child: Icon(
+                Icons.medical_information_outlined,
+                color: colorScheme.onPrimaryContainer,
+                size: 28,
+              ),
+            ),
+            const SizedBox(width: 14),
+            Text(
+              'Patient Case',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w400,
+                  ),
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: const _BottomArea(),
-    );
-  }
-}
-
-class _Header extends StatelessWidget {
-  const _Header();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 88,
-      padding: const EdgeInsets.symmetric(horizontal: 28),
-      decoration: const BoxDecoration(
-        color: PatientCaseScreen.background,
-        border: Border(
-          bottom: BorderSide(
-            color: Color(0xFFEDEDF1),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 28),
+            child: CircleAvatar(
+              radius: 23,
+              backgroundColor: colorScheme.primaryContainer,
+              backgroundImage: const NetworkImage(
+                'https://i.pravatar.cc/150?img=12',
+              ),
+            ),
           ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(28, 28, 28, 32),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const _Title(),
+            const SizedBox(height: 24),
+            const _ChiefComplaintCard(),
+            const SizedBox(height: 18),
+            const _MedicalHistoryCard(),
+            const SizedBox(height: 18),
+            const _MedicationsCard(),
+            const SizedBox(height: 18),
+            const _DocumentsCard(),
+          ],
         ),
       ),
-      child: Row(
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            width: 46,
-            height: 46,
-            color: Colors.white,
-            child: const Icon(
-              Icons.medical_information_outlined,
-              color: Color(0xFF5E6EC8),
-              size: 28,
-            ),
+          _ActionBar(
+            onEdit: () {},
+            onSubmit: () {},
           ),
-          const SizedBox(width: 14),
-          const Text(
-            'Patient Case',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 32,
-              fontWeight: FontWeight.w400,
-              color: PatientCaseScreen.textColor,
-            ),
-          ),
-          const Spacer(),
-          const CircleAvatar(
-            radius: 23,
-            backgroundImage: NetworkImage(
-              'https://i.pravatar.cc/150?img=12',
-            ),
+          PatientNavigationBar(
+            selectedIndex: 1,
+            onSelected: (index) {
+              switch (index) {
+                case 0:
+                  Navigator.pushReplacementNamed(context, '/patient');
+                  break;
+                case 1:
+                  break;
+                case 2:
+                  Navigator.pushReplacementNamed(context, '/patient/chat');
+                  break;
+                case 3:
+                  Navigator.pushReplacementNamed(context, '/patient/records');
+                  break;
+                case 4:
+                  Navigator.pushReplacementNamed(context, '/patient/profile');
+                  break;
+              }
+            },
           ),
         ],
       ),
@@ -100,27 +105,25 @@ class _Title extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Review your information',
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 34,
-            fontWeight: FontWeight.w400,
-            color: PatientCaseScreen.textColor,
-          ),
+          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                fontWeight: FontWeight.w400,
+                color: colorScheme.onSurface,
+              ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Text(
-          'Please verify the details below before submitting to\nyour care team.',
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 19,
-            height: 1.45,
-            color: PatientCaseScreen.secondaryText,
-          ),
+          'Please verify the details below before submitting to your care team.',
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+                height: 1.5,
+              ),
         ),
       ],
     );
@@ -136,14 +139,16 @@ class _SectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(22, 22, 22, 22),
-      decoration: BoxDecoration(
-        color: PatientCaseScreen.cardColor,
-        borderRadius: BorderRadius.circular(32),
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Card(
+      margin: EdgeInsets.zero,
+      color: colorScheme.surfaceContainerLow,
+      elevation: 0,
+      child: Padding(
+        padding: const EdgeInsets.all(22),
+        child: child,
       ),
-      child: child,
     );
   }
 }
@@ -159,36 +164,42 @@ class _SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Row(
       children: [
-        Icon(
-          icon,
-          color: PatientCaseScreen.primary,
-          size: 27,
+        Container(
+          width: 46,
+          height: 46,
+          decoration: BoxDecoration(
+            color: colorScheme.primaryContainer,
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: Icon(
+            icon,
+            color: colorScheme.onPrimaryContainer,
+            size: 25,
+          ),
         ),
         const SizedBox(width: 14),
         Expanded(
           child: Text(
             title,
-            style: const TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 23,
-              fontWeight: FontWeight.w400,
-              color: PatientCaseScreen.textColor,
-            ),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  color: colorScheme.onSurface,
+                ),
           ),
         ),
-        Container(
-          width: 46,
-          height: 46,
-          decoration: const BoxDecoration(
-            color: Color(0xFFE5E5EA),
-            shape: BoxShape.circle,
+        IconButton(
+          onPressed: () {},
+          tooltip: 'Edit',
+          style: IconButton.styleFrom(
+            backgroundColor: colorScheme.surfaceContainerHighest,
           ),
-          child: const Icon(
+          icon: Icon(
             Icons.edit_outlined,
-            size: 22,
-            color: PatientCaseScreen.secondaryText,
+            color: colorScheme.onSurfaceVariant,
           ),
         ),
       ],
@@ -201,23 +212,23 @@ class _ChiefComplaintCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const _SectionCard(
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return _SectionCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _SectionHeader(
+          const _SectionHeader(
             icon: Icons.medical_information_outlined,
             title: 'Chief Complaint',
           ),
-          SizedBox(height: 22),
+          const SizedBox(height: 22),
           Text(
-            'Persistent lower back pain for the past\n2 weeks, worsening after prolonged\nsitting. Occasional sharp pain radiating\nto the left leg.',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 20,
-              height: 1.7,
-              color: PatientCaseScreen.textColor,
-            ),
+            'Persistent lower back pain for the past 2 weeks, worsening after prolonged sitting. Occasional sharp pain radiating to the left leg.',
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: colorScheme.onSurface,
+                  height: 1.65,
+                ),
           ),
         ],
       ),
@@ -242,7 +253,7 @@ class _MedicalHistoryCard extends StatelessWidget {
           Wrap(
             spacing: 10,
             runSpacing: 10,
-            children: [
+            children: const [
               _HistoryChip(
                 text: 'Hypertension (Diagnosed 2018)',
               ),
@@ -266,22 +277,23 @@ class _HistoryChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Chip(
+      avatar: Icon(
+        Icons.check_circle_outline,
+        size: 18,
+        color: Theme.of(context).colorScheme.onSecondaryContainer,
+      ),
+      label: Text(text),
+      backgroundColor:
+          Theme.of(context).colorScheme.secondaryContainer,
+      labelStyle: TextStyle(
+        color: Theme.of(context).colorScheme.onSecondaryContainer,
+        fontWeight: FontWeight.w500,
+      ),
+      side: BorderSide.none,
       padding: const EdgeInsets.symmetric(
-        horizontal: 17,
-        vertical: 9,
-      ),
-      decoration: BoxDecoration(
-        color: const Color(0xFFE5E5EA),
-        borderRadius: BorderRadius.circular(22),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontFamily: 'Inter',
-          fontSize: 16,
-          color: PatientCaseScreen.textColor,
-        ),
+        horizontal: 8,
+        vertical: 6,
       ),
     );
   }
@@ -294,18 +306,18 @@ class _MedicationsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return _SectionCard(
       child: Column(
-        children: [
-          const _SectionHeader(
+        children: const [
+          _SectionHeader(
             icon: Icons.medication_outlined,
             title: 'Current Medications',
           ),
-          const SizedBox(height: 18),
+          SizedBox(height: 18),
           _MedicationItem(
             icon: Icons.medication_outlined,
             name: 'Lisinopril',
             dosage: '10mg, Once daily',
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           _MedicationItem(
             icon: Icons.medical_services_outlined,
             name: 'Albuterol Inhaler',
@@ -330,55 +342,56 @@ class _MedicationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 18,
-        vertical: 16,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 54,
-            height: 54,
-            decoration: const BoxDecoration(
-              color: Color(0xFFD0DAFF),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              icon,
-              color: PatientCaseScreen.primary,
-              size: 29,
-            ),
-          ),
-          const SizedBox(width: 18),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                name,
-                style: const TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 20,
-                  color: PatientCaseScreen.textColor,
-                ),
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Card(
+      margin: EdgeInsets.zero,
+      color: colorScheme.surface,
+      elevation: 0,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 18,
+          vertical: 16,
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 54,
+              height: 54,
+              decoration: BoxDecoration(
+                color: colorScheme.tertiaryContainer,
+                shape: BoxShape.circle,
               ),
-              const SizedBox(height: 3),
-              Text(
-                dosage,
-                style: const TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 17,
-                  color: PatientCaseScreen.secondaryText,
-                ),
+              child: Icon(
+                icon,
+                color: colorScheme.onTertiaryContainer,
+                size: 28,
               ),
-            ],
-          ),
-        ],
+            ),
+            const SizedBox(width: 18),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: colorScheme.onSurface,
+                          fontWeight: FontWeight.w500,
+                        ),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    dosage,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -389,6 +402,8 @@ class _DocumentsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return _SectionCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -398,54 +413,56 @@ class _DocumentsCard extends StatelessWidget {
             title: 'Attached Documents',
           ),
           const SizedBox(height: 18),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(18),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: 54,
-                  height: 54,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE4EAFF),
-                    borderRadius: BorderRadius.circular(12),
+          Card(
+            margin: EdgeInsets.zero,
+            color: colorScheme.surface,
+            elevation: 0,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Container(
+                    width: 54,
+                    height: 54,
+                    decoration: BoxDecoration(
+                      color: colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Icon(
+                      Icons.image_outlined,
+                      color: colorScheme.onPrimaryContainer,
+                      size: 29,
+                    ),
                   ),
-                  child: const Icon(
-                    Icons.image_outlined,
-                    color: PatientCaseScreen.primary,
-                    size: 30,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                const Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Previous_XRay_Lumbar.jpg',
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 18,
-                          color: PatientCaseScreen.textColor,
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Previous_XRay_Lumbar.jpg',
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                color: colorScheme.onSurface,
+                                fontWeight: FontWeight.w500,
+                              ),
                         ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        '2.4 MB',
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 16,
-                          color: PatientCaseScreen.secondaryText,
+                        const SizedBox(height: 4),
+                        Text(
+                          '2.4 MB',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: colorScheme.onSurfaceVariant,
+                              ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  IconButton(
+                    onPressed: () {},
+                    tooltip: 'View document',
+                    icon: const Icon(Icons.open_in_new_outlined),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -454,184 +471,42 @@ class _DocumentsCard extends StatelessWidget {
   }
 }
 
-class _BottomArea extends StatelessWidget {
-  const _BottomArea();
+class _ActionBar extends StatelessWidget {
+  final VoidCallback onEdit;
+  final VoidCallback onSubmit;
+
+  const _ActionBar({
+    required this.onEdit,
+    required this.onSubmit,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          padding: const EdgeInsets.fromLTRB(28, 14, 28, 14),
-          decoration: const BoxDecoration(
-            color: Color(0xFFF9F9FD),
-            border: Border(
-              top: BorderSide(
-                color: Color(0xFFE3E3E8),
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Material(
+      color: colorScheme.surface,
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(28, 14, 28, 14),
+        child: Row(
+          children: [
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: onEdit,
+                icon: const Icon(Icons.edit_note_outlined),
+                label: const Text('Edit Details'),
               ),
             ),
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: SizedBox(
-                  height: 58,
-                  child: OutlinedButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.edit_note_outlined,
-                      size: 24,
-                    ),
-                    label: const Text(
-                      'Edit Details',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 17,
-                      ),
-                    ),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: PatientCaseScreen.textColor,
-                      side: const BorderSide(
-                        color: Color(0xFFC6C5D4),
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                  ),
-                ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: FilledButton.icon(
+                onPressed: onSubmit,
+                icon: const Icon(Icons.send_outlined),
+                label: const Text('Submit History'),
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: SizedBox(
-                  height: 58,
-                  child: FilledButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.send_outlined,
-                      size: 23,
-                    ),
-                    label: const Text(
-                      'Submit History',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 17,
-                      ),
-                    ),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: PatientCaseScreen.primary,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      elevation: 2,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        const _PatientNavigationBar(),
-      ],
-    );
-  }
-}
-
-class _PatientNavigationBar extends StatefulWidget {
-  const _PatientNavigationBar();
-
-  @override
-  State<_PatientNavigationBar> createState() => _PatientNavigationBarState();
-}
-
-class _PatientNavigationBarState extends State<_PatientNavigationBar> {
-  int selectedIndex = 1;
-
-  final items = const [
-    (Icons.home_outlined, 'Home'),
-    (Icons.medical_services_outlined, 'Case'),
-    (Icons.chat_bubble_outline, 'Chat'),
-    (Icons.description_outlined, 'Records'),
-    (Icons.account_circle_outlined, 'Profile'),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 86,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      decoration: const BoxDecoration(
-        color: Color(0xFFF9F9FD),
-      ),
-      child: Row(
-        children: List.generate(
-          items.length,
-          (index) {
-            final item = items[index];
-            final selected = selectedIndex == index;
-
-            return Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  if (index == 0) {
-                    Navigator.pushReplacementNamed(
-                      context,
-                      '/patient',
-                    );
-                  } else if (index == 1) {
-                    setState(() {
-                      selectedIndex = 1;
-                    });
-                  } else if (index == 2) {
-                    Navigator.pushNamed(
-                      context,
-                      '/patient/chat',
-                    );
-                  } else if (index == 3) {
-                    Navigator.pushNamed(
-                      context,
-                      '/patient/records',
-                    );
-                  } else if (index == 4) {
-                    Navigator.pushNamed(
-                      context,
-                      '/patient/profile',
-                    );
-                  }
-                },
-                child: Container(
-                  height: 68,
-                  margin: const EdgeInsets.symmetric(horizontal: 3),
-                  decoration: BoxDecoration(
-                    color: selected
-                        ? const Color(0xFF5E6EC8)
-                        : Colors.transparent,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        item.$1,
-                        size: 28,
-                        color: const Color(0xFF292A35),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        item.$2,
-                        style: const TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 15,
-                          color: Color(0xFF292A35),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
+            ),
+          ],
         ),
       ),
     );

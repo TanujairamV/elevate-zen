@@ -12,7 +12,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final passwordController = TextEditingController();
 
   bool obscurePassword = true;
-  int selectedNavigationIndex = 0;
 
   @override
   void dispose() {
@@ -36,33 +35,54 @@ class _LoginScreenState extends State<LoginScreen> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9FD),
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Column(
           children: [
             _buildHeader(colorScheme),
             Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(26, 34, 26, 24),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 215),
-                    _buildBrand(colorScheme),
-                    const SizedBox(height: 238),
-                    _buildLoginForm(colorScheme),
-                    const SizedBox(height: 26),
-                    _buildDivider(colorScheme),
-                    const SizedBox(height: 30),
-                    _buildCreateAccount(colorScheme),
-                    const SizedBox(height: 28),
-                  ],
-                ),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 26,
+                      vertical: 24,
+                    ),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight - 48,
+                      ),
+                      child: Center(
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(
+                            maxWidth: 520,
+                          ),
+                          child: _buildContent(colorScheme),
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
-            _buildBottomNavigation(colorScheme),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildContent(ColorScheme colorScheme) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _buildBrand(colorScheme),
+        const SizedBox(height: 42),
+        _buildLoginForm(colorScheme),
+        const SizedBox(height: 24),
+        _buildDivider(colorScheme),
+        const SizedBox(height: 20),
+        _buildCreateAccount(colorScheme),
+      ],
     );
   }
 
@@ -71,11 +91,10 @@ class _LoginScreenState extends State<LoginScreen> {
       height: 64,
       padding: const EdgeInsets.symmetric(horizontal: 27),
       decoration: BoxDecoration(
-        color: const Color(0xFFF9F9FD),
+        color: colorScheme.surface,
         border: Border(
           bottom: BorderSide(
-            color: colorScheme.surfaceContainer,
-            width: 1,
+            color: colorScheme.outlineVariant,
           ),
         ),
       ),
@@ -85,38 +104,30 @@ class _LoginScreenState extends State<LoginScreen> {
             width: 43,
             height: 43,
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(2),
+              color: colorScheme.surfaceContainerLow,
+              borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(
+            child: Icon(
               Icons.medical_information_outlined,
               size: 27,
-              color: Color(0xFF5E6EC8),
+              color: colorScheme.primary,
             ),
           ),
           const SizedBox(width: 11),
-          const Text(
-            'Patient Home',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 29,
-              fontWeight: FontWeight.w400,
-              color: Colors.black,
-              height: 1,
-            ),
+          Text(
+            'Elevate Zen',
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.w400,
+                  color: colorScheme.onSurface,
+                ),
           ),
           const Spacer(),
-          Container(
-            width: 43,
-            height: 43,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                image: NetworkImage(
-                  'https://i.pravatar.cc/150?img=12',
-                ),
-                fit: BoxFit.cover,
-              ),
+          CircleAvatar(
+            radius: 21.5,
+            backgroundColor: colorScheme.surfaceContainerHighest,
+            child: Icon(
+              Icons.person_outline,
+              color: colorScheme.onSurfaceVariant,
             ),
           ),
         ],
@@ -128,59 +139,54 @@ class _LoginScreenState extends State<LoginScreen> {
     return Column(
       children: [
         Container(
-          width: 128,
-          height: 128,
+          width: 112,
+          height: 112,
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(2),
+            color: colorScheme.surfaceContainerLow,
+            borderRadius: BorderRadius.circular(28),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.12),
-                blurRadius: 12,
-                offset: const Offset(0, 5),
+                color: colorScheme.shadow.withValues(alpha: 0.12),
+                blurRadius: 16,
+                offset: const Offset(0, 6),
               ),
             ],
           ),
           child: Center(
             child: Container(
-              width: 47,
-              height: 47,
+              width: 48,
+              height: 48,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: const Color(0xFF5E6EC8),
+                  color: colorScheme.primary,
                   width: 2,
                 ),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(14),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.medical_information_outlined,
-                color: Color(0xFF5E6EC8),
+                color: colorScheme.primary,
                 size: 31,
               ),
             ),
           ),
         ),
-        const SizedBox(height: 34),
-        const Text(
+        const SizedBox(height: 24),
+        Text(
           'Elevate Zen',
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 40,
-            fontWeight: FontWeight.w400,
-            color: Colors.black,
-            height: 1.1,
-          ),
+          style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                fontWeight: FontWeight.w400,
+                color: colorScheme.onSurface,
+              ),
         ),
-        const SizedBox(height: 14),
-        const Text(
+        const SizedBox(height: 8),
+        Text(
           'Clearer history. Better care.',
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 22,
-            fontWeight: FontWeight.w400,
-            color: Color(0xFF292A35),
-            letterSpacing: 0.4,
-          ),
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w400,
+                color: colorScheme.onSurfaceVariant,
+              ),
+          textAlign: TextAlign.center,
         ),
       ],
     );
@@ -190,75 +196,38 @@ class _LoginScreenState extends State<LoginScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text(
+        Text(
           'Email or Phone',
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 15,
-            fontWeight: FontWeight.w400,
-            color: Color(0xFF292A35),
-          ),
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
         ),
-        const SizedBox(height: 7),
+        const SizedBox(height: 8),
         TextField(
           controller: emailController,
           keyboardType: TextInputType.emailAddress,
-          decoration: InputDecoration(
+          textInputAction: TextInputAction.next,
+          decoration: const InputDecoration(
             hintText: 'Enter your detail',
-            prefixIcon: const Icon(
-              Icons.person_outline,
-              color: Color(0xFF383944),
-              size: 27,
-            ),
-            filled: true,
-            fillColor: const Color(0xFFEDEDF1),
-            border: const UnderlineInputBorder(
-              borderSide: BorderSide(
-                color: Color(0xFFC6C5D4),
-              ),
-            ),
-            enabledBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(
-                color: Color(0xFFC6C5D4),
-              ),
-            ),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-                color: colorScheme.primary,
-                width: 2,
-              ),
-            ),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 18,
-            ),
-          ),
-          style: const TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 20,
+            prefixIcon: Icon(Icons.person_outline),
           ),
         ),
-        const SizedBox(height: 23),
-        const Text(
+        const SizedBox(height: 18),
+        Text(
           'Password',
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 15,
-            fontWeight: FontWeight.w400,
-            color: Color(0xFF292A35),
-          ),
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
         ),
-        const SizedBox(height: 7),
+        const SizedBox(height: 8),
         TextField(
           controller: passwordController,
           obscureText: obscurePassword,
+          textInputAction: TextInputAction.done,
+          onSubmitted: (_) => _signIn(),
           decoration: InputDecoration(
             hintText: 'Enter your password',
-            prefixIcon: const Icon(
-              Icons.lock_outline,
-              color: Color(0xFF383944),
-              size: 27,
-            ),
+            prefixIcon: const Icon(Icons.lock_outline),
             suffixIcon: IconButton(
               onPressed: () {
                 setState(() {
@@ -271,84 +240,27 @@ class _LoginScreenState extends State<LoginScreen> {
                     : Icons.visibility_off_outlined,
               ),
             ),
-            filled: true,
-            fillColor: const Color(0xFFEDEDF1),
-            border: const UnderlineInputBorder(
-              borderSide: BorderSide(
-                color: Color(0xFFC6C5D4),
-              ),
-            ),
-            enabledBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(
-                color: Color(0xFFC6C5D4),
-              ),
-            ),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-                color: colorScheme.primary,
-                width: 2,
-              ),
-            ),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 18,
-            ),
-          ),
-          style: const TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 20,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
         Align(
           alignment: Alignment.centerRight,
           child: TextButton(
             onPressed: () {},
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.zero,
-              minimumSize: Size.zero,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-            child: const Text(
-              'Forgot password?',
-              style: TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 15,
-                color: Color(0xFF183CA8),
-              ),
-            ),
+            child: const Text('Forgot password?'),
           ),
         ),
-        const SizedBox(height: 25),
+        const SizedBox(height: 12),
         SizedBox(
-          height: 68,
+          height: 56,
           child: FilledButton(
             onPressed: _signIn,
-            style: FilledButton.styleFrom(
-              backgroundColor: const Color(0xFF4D5FBE),
-              foregroundColor: Colors.white,
-              elevation: 2,
-              shadowColor: Colors.black.withValues(alpha: 0.18),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-            ),
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'Sign in',
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 19,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+                Text('Sign in'),
                 SizedBox(width: 12),
-                Icon(
-                  Icons.arrow_forward_rounded,
-                  size: 27,
-                ),
+                Icon(Icons.arrow_forward_rounded),
               ],
             ),
           ),
@@ -363,24 +275,20 @@ class _LoginScreenState extends State<LoginScreen> {
         Expanded(
           child: Divider(
             color: colorScheme.outlineVariant,
-            thickness: 1,
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 23),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18),
           child: Text(
             'OR',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 14,
-              color: Color(0xFF292A35),
-            ),
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
           ),
         ),
         Expanded(
           child: Divider(
             color: colorScheme.outlineVariant,
-            thickness: 1,
           ),
         ),
       ],
@@ -391,102 +299,17 @@ class _LoginScreenState extends State<LoginScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text(
+        Text(
           'New to Elevate Zen? ',
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 17,
-            color: Color(0xFF292A35),
-          ),
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
         ),
-        GestureDetector(
-          onTap: () {},
-          child: const Text(
-            'Create account',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 18,
-              color: Color(0xFF334DB3),
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+        TextButton(
+          onPressed: () {},
+          child: const Text('Create account'),
         ),
       ],
-    );
-  }
-
-  Widget _buildBottomNavigation(ColorScheme colorScheme) {
-    const items = [
-      (Icons.home_outlined, 'Home'),
-      (Icons.medical_services_outlined, 'Case'),
-      (Icons.chat_bubble_outline, 'Chat'),
-      (Icons.description_outlined, 'Records'),
-      (Icons.account_circle_outlined, 'Profile'),
-    ];
-
-    return Container(
-      height: 76,
-      decoration: BoxDecoration(
-        color: const Color(0xFFF9F9FD),
-        border: Border(
-          top: BorderSide(
-            color: colorScheme.surfaceContainer,
-            width: 1,
-          ),
-        ),
-      ),
-      child: Row(
-        children: List.generate(
-          items.length,
-          (index) {
-            final selected = selectedNavigationIndex == index;
-            final item = items[index];
-
-            return Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedNavigationIndex = index;
-                  });
-                },
-                child: Container(
-                  height: 68,
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 3,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: selected
-                        ? const Color(0xFF5E6EC8)
-                        : Colors.transparent,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        item.$1,
-                        size: 26,
-                        color: const Color(0xFF292A35),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        item.$2,
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 14,
-                          fontWeight:
-                              selected ? FontWeight.w500 : FontWeight.w400,
-                          color: const Color(0xFF292A35),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
-      ),
     );
   }
 }

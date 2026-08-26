@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../app/widgets/patient_navigation_bar.dart';
 
 class PatientChatScreen extends StatefulWidget {
   const PatientChatScreen({super.key});
@@ -8,11 +9,10 @@ class PatientChatScreen extends StatefulWidget {
 }
 
 class _PatientChatScreenState extends State<PatientChatScreen> {
-  int selectedIndex = 2;
-
   final List<_ChatMessage> messages = [
     const _ChatMessage(
-      text: "Hi Rahul. I'm reviewing your latest lipid panel. How can I help you today?",
+      text:
+          "Hi Rahul. I'm reviewing your latest lipid panel. How can I help you today?",
       isUser: false,
     ),
     const _ChatMessage(
@@ -32,67 +32,125 @@ class _PatientChatScreenState extends State<PatientChatScreen> {
     });
   }
 
-  void _navigate(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
-
-    switch (index) {
-      case 0:
-        Navigator.pushReplacementNamed(context, '/patient');
-        break;
-      case 1:
-        Navigator.pushNamed(context, '/patient/case');
-        break;
-      case 2:
-        break;
-      case 3:
-        Navigator.pushNamed(context, '/patient/records');
-        break;
-      case 4:
-        Navigator.pushNamed(context, '/patient/profile');
-        break;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF9F9FD),
-      body: SafeArea(
-        child: Column(
-          children: [
-            const _Header(),
-            Expanded(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: ListView.builder(
-                      padding: const EdgeInsets.fromLTRB(26, 30, 26, 20),
-                      itemCount: messages.length + 1,
-                      itemBuilder: (context, index) {
-                        if (index == messages.length) {
-                          return const _TypingIndicator();
-                        }
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
-                        return _MessageBubble(
-                          message: messages[index],
-                        );
-                      },
-                    ),
-                  ),
-                  _QuickActions(
-                    onSelected: _sendQuickMessage,
-                  ),
-                ],
+    return Scaffold(
+      backgroundColor: colorScheme.surface,
+      appBar: AppBar(
+        backgroundColor: colorScheme.surface,
+        surfaceTintColor: colorScheme.surfaceTint,
+        elevation: 0,
+        scrolledUnderElevation: 1,
+        titleSpacing: 24,
+        title: Row(
+          children: [
+            Container(
+              width: 46,
+              height: 46,
+              decoration: BoxDecoration(
+                color: colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(14),
               ),
+              child: Icon(
+                Icons.medical_information_outlined,
+                color: colorScheme.onPrimaryContainer,
+                size: 27,
+              ),
+            ),
+            const SizedBox(width: 13),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Patient Chat',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    color: colorScheme.onSurface,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  'Elevate Assistant',
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            tooltip: 'More options',
+            icon: const Icon(Icons.more_vert),
+          ),
+          const SizedBox(width: 8),
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: CircleAvatar(
+              radius: 21,
+              backgroundColor: colorScheme.primaryContainer,
+              backgroundImage: const NetworkImage(
+                'https://i.pravatar.cc/150?img=12',
+              ),
+            ),
+          ),
+        ],
       ),
-      bottomNavigationBar: _BottomNavigationBar(
-        selectedIndex: selectedIndex,
-        onSelected: _navigate,
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.fromLTRB(22, 20, 22, 16),
+              itemCount: messages.length + 1,
+              itemBuilder: (context, index) {
+                if (index == messages.length) {
+                  return const _TypingIndicator();
+                }
+
+                return _MessageBubble(
+                  message: messages[index],
+                );
+              },
+            ),
+          ),
+          _QuickActions(
+            onSelected: _sendQuickMessage,
+          ),
+        ],
+      ),
+      bottomNavigationBar: PatientNavigationBar(
+        selectedIndex: 2,
+        onSelected: (index) {
+          switch (index) {
+            case 0:
+              Navigator.pushReplacementNamed(context, '/patient');
+              break;
+            case 1:
+              Navigator.pushReplacementNamed(
+                context,
+                '/patient/case',
+              );
+              break;
+            case 2:
+              break;
+            case 3:
+              Navigator.pushReplacementNamed(
+                context,
+                '/patient/records',
+              );
+              break;
+            case 4:
+              Navigator.pushReplacementNamed(
+                context,
+                '/patient/profile',
+              );
+              break;
+          }
+        },
       ),
     );
   }
@@ -108,57 +166,6 @@ class _ChatMessage {
   });
 }
 
-class _Header extends StatelessWidget {
-  const _Header();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 88,
-      padding: const EdgeInsets.symmetric(horizontal: 28),
-      decoration: const BoxDecoration(
-        color: Color(0xFFF9F9FD),
-        border: Border(
-          bottom: BorderSide(
-            color: Color(0xFFEDEDF1),
-          ),
-        ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 46,
-            height: 46,
-            color: Colors.white,
-            child: const Icon(
-              Icons.medical_information_outlined,
-              color: Color(0xFF5E6EC8),
-              size: 28,
-            ),
-          ),
-          const SizedBox(width: 12),
-          const Text(
-            'Patient Chat',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 32,
-              fontWeight: FontWeight.w400,
-              color: Color(0xFF111216),
-            ),
-          ),
-          const Spacer(),
-          const CircleAvatar(
-            radius: 23,
-            backgroundImage: NetworkImage(
-              'https://i.pravatar.cc/150?img=12',
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _MessageBubble extends StatelessWidget {
   final _ChatMessage message;
 
@@ -168,49 +175,55 @@ class _MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     if (message.isUser) {
       return Align(
         alignment: Alignment.centerRight,
         child: Padding(
           padding: const EdgeInsets.only(
-            top: 30,
-            left: 70,
+            top: 20,
+            left: 64,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              const Padding(
-                padding: EdgeInsets.only(right: 6, bottom: 7),
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: 6,
+                  bottom: 7,
+                ),
                 child: Text(
                   'You',
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 15,
-                    color: Color(0xFF292A35),
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
               Container(
+                constraints: const BoxConstraints(
+                  maxWidth: 620,
+                ),
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
-                  vertical: 20,
+                  vertical: 16,
                 ),
-                decoration: const BoxDecoration(
-                  color: Color(0xFF4D5FBE),
-                  borderRadius: BorderRadius.only(
+                decoration: BoxDecoration(
+                  color: colorScheme.primaryContainer,
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(22),
-                    topRight: Radius.circular(3),
+                    topRight: Radius.circular(6),
                     bottomLeft: Radius.circular(22),
                     bottomRight: Radius.circular(22),
                   ),
                 ),
                 child: Text(
                   message.text,
-                  style: const TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 20,
-                    height: 1.4,
-                    color: Colors.white,
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    color: colorScheme.onPrimaryContainer,
+                    height: 1.45,
                   ),
                 ),
               ),
@@ -221,7 +234,10 @@ class _MessageBubble extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.only(right: 40),
+      padding: const EdgeInsets.only(
+        right: 42,
+        top: 20,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -230,49 +246,54 @@ class _MessageBubble extends StatelessWidget {
               Container(
                 width: 42,
                 height: 42,
-                decoration: const BoxDecoration(
-                  color: Color(0xFF5E6EC8),
+                decoration: BoxDecoration(
+                  color: colorScheme.secondaryContainer,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.smart_toy_outlined,
-                  color: Colors.white,
-                  size: 25,
+                  color: colorScheme.onSecondaryContainer,
+                  size: 24,
                 ),
               ),
-              const SizedBox(width: 14),
-              const Text(
+              const SizedBox(width: 12),
+              Text(
                 'Elevate Assistant',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 15,
-                  color: Color(0xFF292A35),
+                style: theme.textTheme.labelLarge?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ],
           ),
           const SizedBox(height: 8),
           Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 21,
-              vertical: 20,
+            constraints: const BoxConstraints(
+              maxWidth: 680,
             ),
-            decoration: const BoxDecoration(
-              color: Color(0xFFEDEDF1),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(4),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 17,
+            ),
+            decoration: BoxDecoration(
+              color: colorScheme.surfaceContainerLow,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(6),
                 topRight: Radius.circular(22),
                 bottomLeft: Radius.circular(22),
                 bottomRight: Radius.circular(22),
               ),
+              border: Border.all(
+                color: colorScheme.outlineVariant.withValues(
+                  alpha: 0.55,
+                ),
+              ),
             ),
             child: Text(
               message.text,
-              style: const TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 20,
-                height: 1.55,
-                color: Color(0xFF17181C),
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: colorScheme.onSurface,
+                height: 1.5,
               ),
             ),
           ),
@@ -287,24 +308,34 @@ class _TypingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
-        margin: const EdgeInsets.only(top: 36),
+        margin: const EdgeInsets.only(
+          top: 24,
+          left: 54,
+        ),
         padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 14,
+          horizontal: 17,
+          vertical: 12,
         ),
         decoration: BoxDecoration(
-          color: const Color(0xFFEDEDF1),
-          borderRadius: BorderRadius.circular(22),
+          color: colorScheme.surfaceContainerLow,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: colorScheme.outlineVariant.withValues(
+              alpha: 0.55,
+            ),
+          ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _Dot(),
-            _Dot(),
-            _Dot(),
+            _Dot(color: colorScheme.primary),
+            _Dot(color: colorScheme.primary),
+            _Dot(color: colorScheme.primary),
           ],
         ),
       ),
@@ -313,16 +344,20 @@ class _TypingIndicator extends StatelessWidget {
 }
 
 class _Dot extends StatelessWidget {
-  const _Dot();
+  final Color color;
+
+  const _Dot({
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 8,
-      height: 8,
+      width: 7,
+      height: 7,
       margin: const EdgeInsets.symmetric(horizontal: 3),
-      decoration: const BoxDecoration(
-        color: Color(0xFF9AA8D8),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.55),
         shape: BoxShape.circle,
       ),
     );
@@ -338,34 +373,46 @@ class _QuickActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 66,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 26),
-        children: [
-          _ActionChip(
-            icon: Icons.trending_up_rounded,
-            label: 'Analyze Trends',
-            onTap: () => onSelected(
-              'Can you analyze my health trends?',
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Material(
+      color: colorScheme.surfaceContainer,
+      elevation: 0,
+      child: SafeArea(
+        top: false,
+        child: SizedBox(
+          height: 72,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 22,
+              vertical: 10,
             ),
+            children: [
+              _ActionChip(
+                icon: Icons.trending_up_rounded,
+                label: 'Analyze Trends',
+                onTap: () => onSelected(
+                  'Can you analyze my health trends?',
+                ),
+              ),
+              _ActionChip(
+                icon: Icons.restaurant_menu_outlined,
+                label: 'Diet Tips',
+                onTap: () => onSelected(
+                  'Can you give me some diet tips?',
+                ),
+              ),
+              _ActionChip(
+                icon: Icons.access_time_rounded,
+                label: 'Next Appointment',
+                onTap: () => onSelected(
+                  'When is my next appointment?',
+                ),
+              ),
+            ],
           ),
-          _ActionChip(
-            icon: Icons.restaurant_menu_outlined,
-            label: 'Diet Tips',
-            onTap: () => onSelected(
-              'Can you give me some diet tips?',
-            ),
-          ),
-          _ActionChip(
-            icon: Icons.access_time_rounded,
-            label: 'Next Appointment',
-            onTap: () => onSelected(
-              'When is my next appointment?',
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -384,104 +431,36 @@ class _ActionChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Padding(
       padding: const EdgeInsets.only(right: 10),
       child: ActionChip(
         onPressed: onTap,
         avatar: Icon(
           icon,
-          size: 22,
-          color: const Color(0xFF334DB3),
+          size: 20,
+          color: colorScheme.onSecondaryContainer,
         ),
         label: Text(
           label,
-          style: const TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 16,
-            color: Color(0xFF17181C),
+          style: TextStyle(
+            color: colorScheme.onSecondaryContainer,
+            fontWeight: FontWeight.w500,
           ),
         ),
-        backgroundColor: const Color(0xFFEDEDF1),
-        side: BorderSide.none,
+        backgroundColor: colorScheme.secondaryContainer,
+        side: BorderSide(
+          color: colorScheme.outlineVariant.withValues(
+            alpha: 0.45,
+          ),
+        ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(18),
         ),
-      ),
-    );
-  }
-}
-
-class _BottomNavigationBar extends StatelessWidget {
-  final int selectedIndex;
-  final ValueChanged<int> onSelected;
-
-  const _BottomNavigationBar({
-    required this.selectedIndex,
-    required this.onSelected,
-  });
-
-  static const items = [
-    (Icons.home_outlined, 'Home'),
-    (Icons.medical_services_outlined, 'Case'),
-    (Icons.chat_bubble_outline, 'Chat'),
-    (Icons.description_outlined, 'Records'),
-    (Icons.account_circle_outlined, 'Profile'),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 86,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      decoration: const BoxDecoration(
-        color: Color(0xFFF9F9FD),
-        border: Border(
-          top: BorderSide(
-            color: Color(0xFFEDEDF1),
-          ),
-        ),
-      ),
-      child: Row(
-        children: List.generate(
-          items.length,
-          (index) {
-            final item = items[index];
-            final selected = selectedIndex == index;
-
-            return Expanded(
-              child: GestureDetector(
-                onTap: () => onSelected(index),
-                child: Container(
-                  height: 68,
-                  margin: const EdgeInsets.symmetric(horizontal: 3),
-                  decoration: BoxDecoration(
-                    color: selected
-                        ? const Color(0xFF5E6EC8)
-                        : Colors.transparent,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        item.$1,
-                        size: 28,
-                        color: const Color(0xFF292A35),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        item.$2,
-                        style: const TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 15,
-                          color: Color(0xFF292A35),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
+        padding: const EdgeInsets.symmetric(
+          horizontal: 9,
+          vertical: 8,
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../app/widgets/patient_navigation_bar.dart';
 
 class PatientHomeScreen extends StatelessWidget {
   const PatientHomeScreen({super.key});
@@ -10,7 +11,7 @@ class PatientHomeScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            _Header(),
+            const _Header(),
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(36, 32, 36, 32),
@@ -32,12 +33,34 @@ class PatientHomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const _PatientNavigationBar(),
+      bottomNavigationBar: PatientNavigationBar(
+        selectedIndex: 0,
+        onSelected: (index) {
+          switch (index) {
+            case 0:
+              break;
+            case 1:
+              Navigator.pushReplacementNamed(context, '/patient/case');
+              break;
+            case 2:
+              Navigator.pushReplacementNamed(context, '/patient/chat');
+              break;
+            case 3:
+              Navigator.pushReplacementNamed(context, '/patient/records');
+              break;
+            case 4:
+              Navigator.pushReplacementNamed(context, '/patient/profile');
+              break;
+          }
+        },
+      ),
     );
   }
 }
 
 class _Header extends StatelessWidget {
+  const _Header();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -56,7 +79,10 @@ class _Header extends StatelessWidget {
           Container(
             width: 58,
             height: 58,
-            color: Colors.white,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+            ),
             child: const Icon(
               Icons.medical_information_outlined,
               size: 34,
@@ -254,17 +280,17 @@ class _AppointmentSection extends StatelessWidget {
             color: const Color(0xFFEDEDF1),
             borderRadius: BorderRadius.circular(32),
           ),
-          child: Row(
+          child: const Row(
             children: [
-              const CircleAvatar(
+              CircleAvatar(
                 radius: 35,
                 backgroundColor: Color(0xFFB6C8FF),
                 backgroundImage: NetworkImage(
                   'https://i.pravatar.cc/150?img=47',
                 ),
               ),
-              const SizedBox(width: 24),
-              const Expanded(
+              SizedBox(width: 24),
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -292,26 +318,30 @@ class _AppointmentSection extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 18,
-                      vertical: 8,
-                    ),
+                  DecoratedBox(
                     decoration: BoxDecoration(
-                      color: const Color(0xFF6B7BA5),
-                      borderRadius: BorderRadius.circular(22),
+                      color: Color(0xFF6B7BA5),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(22),
+                      ),
                     ),
-                    child: const Text(
-                      'Today',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 16,
-                        color: Colors.white,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 18,
+                        vertical: 8,
+                      ),
+                      child: Text(
+                        'Today',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  const Text(
+                  SizedBox(height: 10),
+                  Text(
                     '10:20 AM',
                     style: TextStyle(
                       fontFamily: 'Inter',
@@ -480,104 +510,6 @@ class _RecordCard extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _PatientNavigationBar extends StatefulWidget {
-  const _PatientNavigationBar();
-
-  @override
-  State<_PatientNavigationBar> createState() => _PatientNavigationBarState();
-}
-
-class _PatientNavigationBarState extends State<_PatientNavigationBar> {
-  int selectedIndex = 0;
-
-  final items = const [
-    (Icons.home_outlined, 'Home'),
-    (Icons.medical_services_outlined, 'Case'),
-    (Icons.chat_bubble_outline, 'Chat'),
-    (Icons.description_outlined, 'Records'),
-    (Icons.account_circle_outlined, 'Profile'),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 86,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      decoration: const BoxDecoration(
-        color: Color(0xFFF9F9FD),
-        border: Border(
-          top: BorderSide(
-            color: Color(0xFFEDEDF1),
-          ),
-        ),
-      ),
-      child: Row(
-        children: List.generate(
-          items.length,
-          (index) {
-            final item = items[index];
-            final selected = selectedIndex == index;
-
-            return Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedIndex = index;
-                  });
-
-                  if (index == 1) {
-                    Navigator.pushNamed(context, '/patient/case');
-                  }
-
-                  if (index == 2) {
-                    Navigator.pushNamed(context, '/patient/chat');
-                  }
-
-                  if (index == 3) {
-                    Navigator.pushNamed(context, '/patient/records');
-                  }
-
-                  if (index == 4) {
-                    Navigator.pushNamed(context, '/patient/profile');
-                  }
-                },
-                child: Container(
-                  height: 68,
-                  margin: const EdgeInsets.symmetric(horizontal: 3),
-                  decoration: BoxDecoration(
-                    color: selected
-                        ? const Color(0xFF5E6EC8)
-                        : Colors.transparent,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        item.$1,
-                        size: 28,
-                        color: const Color(0xFF292A35),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        item.$2,
-                        style: const TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 15,
-                          color: Color(0xFF292A35),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
       ),
     );
   }
