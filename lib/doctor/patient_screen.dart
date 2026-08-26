@@ -1,24 +1,52 @@
 import 'package:flutter/material.dart';
+import '../app/widgets/doctor_navigation_bar.dart';
 
 class DoctorPatientScreen extends StatelessWidget {
   const DoctorPatientScreen({super.key});
 
+  void _navigate(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, '/doctor');
+        break;
+      case 1:
+        Navigator.pushReplacementNamed(context, '/doctor/scan');
+        break;
+      case 2:
+        Navigator.pushReplacementNamed(context, '/doctor/patients');
+        break;
+      case 3:
+        Navigator.pushReplacementNamed(context, '/doctor/chat');
+        break;
+      case 4:
+        Navigator.pushReplacementNamed(context, '/doctor/profile');
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9FD),
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Column(
           children: [
             const _Header(),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(22, 22, 22, 110),
+                padding: const EdgeInsets.fromLTRB(
+                  24,
+                  24,
+                  24,
+                  32,
+                ),
                 child: Column(
-                  children: [
-                    const _PatientHeader(),
-                    const SizedBox(height: 34),
-                    const _Timeline(),
+                  children: const [
+                    _PatientHeader(),
+                    SizedBox(height: 34),
+                    _Timeline(),
                   ],
                 ),
               ),
@@ -26,26 +54,9 @@ class DoctorPatientScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: _DoctorNavigationBar(
+      bottomNavigationBar: DoctorNavigationBar(
         selectedIndex: 2,
-        onSelected: (index) {
-          switch (index) {
-            case 0:
-              Navigator.pushReplacementNamed(context, '/doctor');
-              break;
-            case 1:
-              Navigator.pushNamed(context, '/doctor/scan');
-              break;
-            case 2:
-              break;
-            case 3:
-              Navigator.pushNamed(context, '/doctor/chat');
-              break;
-            case 4:
-              Navigator.pushNamed(context, '/doctor/profile');
-              break;
-          }
-        },
+        onSelected: (index) => _navigate(context, index),
       ),
     );
   }
@@ -56,57 +67,59 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
-      height: 78,
-      padding: const EdgeInsets.symmetric(horizontal: 23),
-      decoration: const BoxDecoration(
-        color: Color(0xFFF9F9FD),
+      height: 80,
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
         border: Border(
           bottom: BorderSide(
-            color: Color(0xFFEDEDF1),
+            color: colorScheme.outlineVariant,
           ),
         ),
       ),
       child: Row(
         children: [
           Container(
-            width: 48,
-            height: 48,
-            color: Colors.white,
-            child: const Icon(
+            width: 52,
+            height: 52,
+            decoration: BoxDecoration(
+              color: colorScheme.primaryContainer,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Icon(
               Icons.medical_information_outlined,
-              color: Color(0xFF5E6EC8),
-              size: 27,
+              color: colorScheme.onPrimaryContainer,
+              size: 30,
             ),
           ),
-          const SizedBox(width: 12),
-          const Text(
-            'Doctor Patients',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 27,
-              fontWeight: FontWeight.w400,
-              color: Color(0xFF111216),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Text(
+              'Doctor Patients',
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineSmall
+                  ?.copyWith(
+                    fontWeight: FontWeight.w500,
+                    color: colorScheme.onSurface,
+                  ),
             ),
           ),
-          const Spacer(),
-          Container(
-            width: 48,
-            height: 48,
-            decoration: const BoxDecoration(
-              color: Color(0xFF4D5FBE),
-              shape: BoxShape.circle,
-            ),
-            child: const Center(
-              child: Text(
-                'AS',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 17,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                ),
-              ),
+          CircleAvatar(
+            radius: 24,
+            backgroundColor: colorScheme.primaryContainer,
+            child: Text(
+              'AS',
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(
+                    color: colorScheme.onPrimaryContainer,
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
           ),
         ],
@@ -120,7 +133,10 @@ class _PatientHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const CircleAvatar(
           radius: 47,
@@ -128,44 +144,39 @@ class _PatientHeader extends StatelessWidget {
             'https://i.pravatar.cc/150?img=12',
           ),
         ),
-        const SizedBox(width: 22),
-        const Expanded(
+        const SizedBox(width: 20),
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Robert C. Vance',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 31,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xFF111216),
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall
+                    ?.copyWith(
+                      fontWeight: FontWeight.w400,
+                      color: colorScheme.onSurface,
+                    ),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 6),
               Text(
                 '68 yrs • Male • ID: 8943-22X',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 19,
-                  color: Color(0xFF454652),
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
               ),
             ],
           ),
         ),
-        Container(
-          width: 58,
-          height: 58,
-          decoration: const BoxDecoration(
-            color: Color(0xFF4D5FBE),
-            shape: BoxShape.circle,
-          ),
-          child: const Icon(
-            Icons.add,
-            size: 36,
-            color: Colors.white,
-          ),
+        const SizedBox(width: 12),
+        FloatingActionButton.small(
+          onPressed: () {},
+          elevation: 0,
+          child: const Icon(Icons.add),
         ),
       ],
     );
@@ -181,17 +192,28 @@ class _Timeline extends StatelessWidget {
       children: [
         const _YearDivider(
           year: '2026',
+          current: true,
         ),
         const SizedBox(height: 20),
         _TimelineItem(
           icon: Icons.medical_services_outlined,
-          iconBackground: const Color(0xFF5E70CE),
+          iconBackground: Theme.of(context)
+              .colorScheme
+              .primaryContainer,
+          iconColor: Theme.of(context)
+              .colorScheme
+              .onPrimaryContainer,
           lineHeight: 35,
           child: const _AppointmentCard(),
         ),
         _TimelineItem(
           icon: Icons.water_drop_outlined,
-          iconBackground: const Color(0xFFB5C9FF),
+          iconBackground: Theme.of(context)
+              .colorScheme
+              .secondaryContainer,
+          iconColor: Theme.of(context)
+              .colorScheme
+              .onSecondaryContainer,
           lineHeight: 35,
           child: const _LabCard(),
         ),
@@ -202,7 +224,12 @@ class _Timeline extends StatelessWidget {
         const SizedBox(height: 20),
         _TimelineItem(
           icon: Icons.medication_outlined,
-          iconBackground: const Color(0xFF6B7BA5),
+          iconBackground: Theme.of(context)
+              .colorScheme
+              .tertiaryContainer,
+          iconColor: Theme.of(context)
+              .colorScheme
+              .onTertiaryContainer,
           lineHeight: 35,
           child: const _PrescriptionCard(),
         ),
@@ -213,8 +240,12 @@ class _Timeline extends StatelessWidget {
         const SizedBox(height: 20),
         _TimelineItem(
           icon: Icons.medical_information_outlined,
-          iconBackground: const Color(0xFFFFD1CD),
-          iconColor: const Color(0xFFB71C1C),
+          iconBackground: Theme.of(context)
+              .colorScheme
+              .errorContainer,
+          iconColor: Theme.of(context)
+              .colorScheme
+              .onErrorContainer,
           lineHeight: 0,
           child: const _DiagnosisCard(),
         ),
@@ -225,13 +256,25 @@ class _Timeline extends StatelessWidget {
 
 class _YearDivider extends StatelessWidget {
   final String year;
+  final bool current;
 
   const _YearDivider({
     required this.year,
+    this.current = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    final backgroundColor = current
+        ? colorScheme.primaryContainer
+        : colorScheme.surfaceContainerHighest;
+
+    final foregroundColor = current
+        ? colorScheme.onPrimaryContainer
+        : colorScheme.onSurfaceVariant;
+
     return Row(
       children: [
         Container(
@@ -240,24 +283,26 @@ class _YearDivider extends StatelessWidget {
             vertical: 8,
           ),
           decoration: BoxDecoration(
-            color: year == '2026'
-                ? const Color(0xFFDCE5FF)
-                : const Color(0xFFE3E3E8),
+            color: backgroundColor,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
             year,
-            style: const TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 16,
-              color: Color(0xFF343640),
-            ),
+            style: Theme.of(context)
+                .textTheme
+                .labelLarge
+                ?.copyWith(
+                  color: foregroundColor,
+                  fontWeight: current
+                      ? FontWeight.w600
+                      : FontWeight.w500,
+                ),
           ),
         ),
-        const SizedBox(width: 22),
-        const Expanded(
+        const SizedBox(width: 18),
+        Expanded(
           child: Divider(
-            color: Color(0xFFE0E0E5),
+            color: colorScheme.outlineVariant,
           ),
         ),
       ],
@@ -268,20 +313,22 @@ class _YearDivider extends StatelessWidget {
 class _TimelineItem extends StatelessWidget {
   final IconData icon;
   final Color iconBackground;
-  final Color? iconColor;
+  final Color iconColor;
   final Widget child;
   final double lineHeight;
 
   const _TimelineItem({
     required this.icon,
     required this.iconBackground,
+    required this.iconColor,
     required this.child,
     required this.lineHeight,
-    this.iconColor,
   });
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -299,25 +346,28 @@ class _TimelineItem extends StatelessWidget {
                   ),
                   child: Icon(
                     icon,
-                    size: 30,
-                    color: iconColor ?? Colors.white,
+                    size: 29,
+                    color: iconColor,
                   ),
                 ),
                 if (lineHeight > 0)
                   Expanded(
                     child: Container(
                       width: 3,
-                      margin: const EdgeInsets.only(top: 2),
-                      color: const Color(0xFFE5E5EA),
+                      margin: const EdgeInsets.only(top: 4),
+                      decoration: BoxDecoration(
+                        color: colorScheme.outlineVariant,
+                        borderRadius: BorderRadius.circular(3),
+                      ),
                     ),
                   ),
               ],
             ),
           ),
-          const SizedBox(width: 22),
+          const SizedBox(width: 20),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(bottom: 34),
+              padding: const EdgeInsets.only(bottom: 28),
               child: child,
             ),
           ),
@@ -332,20 +382,24 @@ class _AppointmentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return _TimelineCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Expanded(
+              Expanded(
                 child: Text(
                   'Cardiology Follow-up',
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 22,
-                    color: Color(0xFF111216),
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: colorScheme.onSurface,
+                      ),
                 ),
               ),
               Container(
@@ -354,41 +408,45 @@ class _AppointmentCard extends StatelessWidget {
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF4D5FBE),
-                  borderRadius: BorderRadius.circular(6),
+                  color: colorScheme.primary,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Text(
+                child: Text(
                   'Current',
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 15,
-                    color: Colors.white,
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelMedium
+                      ?.copyWith(
+                        color: colorScheme.onPrimary,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 4),
-          const Text(
+          const SizedBox(height: 5),
+          Text(
             'Today • 10:30 AM',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 16,
-              color: Color(0xFF454652),
-            ),
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
           ),
-          const SizedBox(height: 20),
-          const Text(
+          const SizedBox(height: 18),
+          Text(
             'Patient reports mild shortness of breath\nafter moderate exertion. Blood pressur...',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 17,
-              height: 1.45,
-              color: Color(0xFF454652),
-            ),
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge
+                ?.copyWith(
+                  height: 1.45,
+                  color: colorScheme.onSurfaceVariant,
+                ),
           ),
-          const SizedBox(height: 20),
-          _SmallAction(
+          const SizedBox(height: 18),
+          const _SmallAction(
             icon: Icons.edit_note_outlined,
             label: 'Notes',
           ),
@@ -403,84 +461,54 @@ class _LabCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return _TimelineCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Comprehensive Metabolic Panel',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 21,
-              color: Color(0xFF111216),
-            ),
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge
+                ?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  color: colorScheme.onSurface,
+                ),
           ),
           const SizedBox(height: 5),
-          const Text(
+          Text(
             'Feb 14, 2026 • Quest Diagnostics',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 16,
-              color: Color(0xFF454652),
-            ),
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 18),
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(
-              horizontal: 13,
-              vertical: 12,
+              horizontal: 14,
+              vertical: 13,
             ),
             decoration: BoxDecoration(
-              color: const Color(0xFFF9F9FD),
-              borderRadius: BorderRadius.circular(14),
+              color: colorScheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(16),
             ),
-            child: const Column(
+            child: Column(
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'Cholesterol (Total)',
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 16,
-                          color: Color(0xFF202126),
-                        ),
-                      ),
-                    ),
-                    Text(
-                      '240 mg/dL ↑',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 16,
-                        color: Color(0xFFC71919),
-                      ),
-                    ),
-                  ],
+                _LabResultRow(
+                  name: 'Cholesterol (Total)',
+                  value: '240 mg/dL ↑',
+                  warning: true,
                 ),
-                SizedBox(height: 9),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'Glucose',
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 16,
-                          color: Color(0xFF202126),
-                        ),
-                      ),
-                    ),
-                    Text(
-                      '95 mg/dL',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 16,
-                        color: Color(0xFF202126),
-                      ),
-                    ),
-                  ],
+                const SizedBox(height: 10),
+                _LabResultRow(
+                  name: 'Glucose',
+                  value: '95 mg/dL',
                 ),
               ],
             ),
@@ -491,76 +519,135 @@ class _LabCard extends StatelessWidget {
   }
 }
 
+class _LabResultRow extends StatelessWidget {
+  final String name;
+  final String value;
+  final bool warning;
+
+  const _LabResultRow({
+    required this.name,
+    required this.value,
+    this.warning = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            name,
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(
+                  color: colorScheme.onSurface,
+                ),
+          ),
+        ),
+        Text(
+          value,
+          style: Theme.of(context)
+              .textTheme
+              .bodyMedium
+              ?.copyWith(
+                color: warning
+                    ? colorScheme.error
+                    : colorScheme.onSurface,
+                fontWeight: warning
+                    ? FontWeight.w600
+                    : FontWeight.w400,
+              ),
+        ),
+      ],
+    );
+  }
+}
+
 class _PrescriptionCard extends StatelessWidget {
   const _PrescriptionCard();
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return _TimelineCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Prescription Updated',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 22,
-              color: Color(0xFF111216),
-            ),
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge
+                ?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  color: colorScheme.onSurface,
+                ),
           ),
           const SizedBox(height: 5),
-          const Text(
+          Text(
             'Nov 03, 2025 • Dr. Sarah Jenkins',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 16,
-              color: Color(0xFF454652),
-            ),
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 18),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(13),
+            padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: const Color(0xFFF9F9FD),
-              borderRadius: BorderRadius.circular(14),
+              color: colorScheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
               children: [
                 Container(
-                  width: 46,
-                  height: 46,
+                  width: 48,
+                  height: 48,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFDCE5FF),
-                    borderRadius: BorderRadius.circular(9),
+                    color: colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(14),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.medication_outlined,
-                    color: Color(0xFF4057A5),
+                    color: colorScheme.onPrimaryContainer,
                   ),
                 ),
                 const SizedBox(width: 15),
-                const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Atorvastatin',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 17,
-                        color: Color(0xFF202126),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Atorvastatin',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleSmall
+                            ?.copyWith(
+                              color: colorScheme.onSurface,
+                              fontWeight: FontWeight.w500,
+                            ),
                       ),
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      '20mg • 1 tablet daily at bedtime',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 15,
-                        color: Color(0xFF454652),
+                      const SizedBox(height: 4),
+                      Text(
+                        '20mg • 1 tablet daily at bedtime',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall
+                            ?.copyWith(
+                              color:
+                                  colorScheme.onSurfaceVariant,
+                            ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -576,66 +663,82 @@ class _DiagnosisCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return _TimelineCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Initial Diagnosis',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 22,
-              color: Color(0xFF111216),
-            ),
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge
+                ?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  color: colorScheme.onSurface,
+                ),
           ),
           const SizedBox(height: 5),
-          const Text(
+          Text(
             'Jun 12, 2024 • General Hospital',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 16,
-              color: Color(0xFF454652),
-            ),
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 18),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.fromLTRB(15, 13, 15, 15),
-            decoration: BoxDecoration(
-              color: const Color(0xFFE9D6D9),
-              borderRadius: BorderRadius.circular(10),
+            padding: const EdgeInsets.fromLTRB(
+              15,
+              14,
+              15,
+              15,
             ),
-            child: const Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            decoration: BoxDecoration(
+              color: colorScheme.errorContainer,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Row(
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
               children: [
                 Icon(
                   Icons.warning_amber_rounded,
-                  color: Color(0xFFB71C1C),
-                  size: 23,
+                  color: colorScheme.onErrorContainer,
+                  size: 24,
                 ),
-                SizedBox(width: 12),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
                     children: [
                       Text(
                         'Essential (primary) hypertension',
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFFB71C1C),
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleSmall
+                            ?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color:
+                                  colorScheme.onErrorContainer,
+                            ),
                       ),
-                      SizedBox(height: 7),
+                      const SizedBox(height: 7),
                       Text(
                         'ICD-10: I10. Patient presented\nwith persistent high blood\npressure readings over 3 visits.',
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 16,
-                          height: 1.4,
-                          color: Color(0xFF343640),
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(
+                              height: 1.4,
+                              color:
+                                  colorScheme.onErrorContainer,
+                            ),
                       ),
                     ],
                   ),
@@ -658,14 +761,27 @@ class _TimelineCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(18, 20, 18, 18),
-      decoration: BoxDecoration(
-        color: const Color(0xFFEDEDF1),
-        borderRadius: BorderRadius.circular(20),
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Card(
+      margin: EdgeInsets.zero,
+      elevation: 0,
+      color: colorScheme.surfaceContainerLow,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(22),
+        side: BorderSide(
+          color: colorScheme.outlineVariant,
+        ),
       ),
-      child: child,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(
+          18,
+          20,
+          18,
+          18,
+        ),
+        child: child,
+      ),
     );
   }
 }
@@ -681,14 +797,16 @@ class _SmallAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 15,
         vertical: 10,
       ),
       decoration: BoxDecoration(
-        color: const Color(0xFFE2E2E7),
-        borderRadius: BorderRadius.circular(11),
+        color: colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(14),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -696,93 +814,19 @@ class _SmallAction extends StatelessWidget {
           Icon(
             icon,
             size: 19,
-            color: const Color(0xFF202126),
+            color: colorScheme.onSurfaceVariant,
           ),
           const SizedBox(width: 7),
           Text(
             label,
-            style: const TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 15,
-              color: Color(0xFF202126),
-            ),
+            style: Theme.of(context)
+                .textTheme
+                .labelLarge
+                ?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _DoctorNavigationBar extends StatelessWidget {
-  final int selectedIndex;
-  final ValueChanged<int> onSelected;
-
-  const _DoctorNavigationBar({
-    required this.selectedIndex,
-    required this.onSelected,
-  });
-
-  static const items = [
-    (Icons.grid_view_outlined, 'HOME'),
-    (Icons.qr_code_scanner_outlined, 'SCAN'),
-    (Icons.groups_outlined, 'PATIENTS'),
-    (Icons.chat_bubble_outline, 'CHAT'),
-    (Icons.account_box_outlined, 'PROFILE'),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 92,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      decoration: const BoxDecoration(
-        color: Color(0xFFF9F9FD),
-        border: Border(
-          top: BorderSide(
-            color: Color(0xFFEDEDF1),
-          ),
-        ),
-      ),
-      child: Row(
-        children: List.generate(
-          items.length,
-          (index) {
-            final item = items[index];
-            final selected = index == selectedIndex;
-
-            return Expanded(
-              child: GestureDetector(
-                onTap: () => onSelected(index),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      item.$1,
-                      size: 30,
-                      color: selected
-                          ? const Color(0xFF334DB3)
-                          : const Color(0xFF292A35),
-                    ),
-                    const SizedBox(height: 7),
-                    Text(
-                      item.$2,
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 14,
-                        fontWeight: selected
-                            ? FontWeight.w600
-                            : FontWeight.w400,
-                        color: selected
-                            ? const Color(0xFF334DB3)
-                            : const Color(0xFF292A35),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
       ),
     );
   }

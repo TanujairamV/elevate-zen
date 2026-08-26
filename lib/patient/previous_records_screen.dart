@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../app/widgets/patient_navigation_bar.dart';
 
 class PreviousRecordsScreen extends StatefulWidget {
   const PreviousRecordsScreen({super.key});
@@ -35,37 +36,40 @@ class _PreviousRecordsScreenState extends State<PreviousRecordsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9FD),
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Column(
           children: [
             const _Header(),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(32, 56, 32, 150),
+                padding: const EdgeInsets.fromLTRB(24, 32, 24, 32),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const _Intro(),
-                    const SizedBox(height: 38),
+                    const SizedBox(height: 32),
                     _UploadArea(
                       onAddDocument: _addDocument,
                     ),
-                    const SizedBox(height: 54),
-                    const Text(
+                    const SizedBox(height: 40),
+                    Text(
                       'Uploaded Documents',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 25,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF111216),
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall
+                          ?.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: colorScheme.onSurface,
+                          ),
                     ),
-                    const SizedBox(height: 26),
+                    const SizedBox(height: 20),
                     ...documents.map(
                       (document) => Padding(
-                        padding: const EdgeInsets.only(bottom: 22),
+                        padding: const EdgeInsets.only(bottom: 16),
                         child: _DocumentCard(
                           document: document,
                           onDelete: () {
@@ -76,6 +80,7 @@ class _PreviousRecordsScreenState extends State<PreviousRecordsScreen> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 90),
                   ],
                 ),
               ),
@@ -83,7 +88,39 @@ class _PreviousRecordsScreenState extends State<PreviousRecordsScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: const _BottomArea(),
+      bottomNavigationBar: PatientNavigationBar(
+        selectedIndex: 3,
+        onSelected: (index) {
+          switch (index) {
+            case 0:
+              Navigator.pushReplacementNamed(
+                context,
+                '/patient',
+              );
+              break;
+            case 1:
+              Navigator.pushReplacementNamed(
+                context,
+                '/patient/case',
+              );
+              break;
+            case 2:
+              Navigator.pushReplacementNamed(
+                context,
+                '/patient/chat',
+              );
+              break;
+            case 3:
+              break;
+            case 4:
+              Navigator.pushReplacementNamed(
+                context,
+                '/patient/profile',
+              );
+              break;
+          }
+        },
+      ),
     );
   }
 }
@@ -110,40 +147,44 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
-      height: 88,
-      padding: const EdgeInsets.symmetric(horizontal: 28),
-      decoration: const BoxDecoration(
-        color: Color(0xFFF9F9FD),
+      height: 80,
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
         border: Border(
           bottom: BorderSide(
-            color: Color(0xFFEDEDF1),
+            color: colorScheme.outlineVariant,
           ),
         ),
       ),
       child: Row(
         children: [
           Container(
-            width: 46,
-            height: 46,
-            color: Colors.white,
-            child: const Icon(
+            width: 52,
+            height: 52,
+            decoration: BoxDecoration(
+              color: colorScheme.primaryContainer,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Icon(
               Icons.medical_information_outlined,
-              color: Color(0xFF5E6EC8),
-              size: 28,
+              color: colorScheme.onPrimaryContainer,
+              size: 30,
             ),
           ),
           const SizedBox(width: 14),
-          const Text(
-            'Patient Case',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 32,
-              fontWeight: FontWeight.w400,
-              color: Color(0xFF111216),
+          Expanded(
+            child: Text(
+              'Patient Records',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w500,
+                    color: colorScheme.onSurface,
+                  ),
             ),
           ),
-          const Spacer(),
           const CircleAvatar(
             radius: 23,
             backgroundImage: NetworkImage(
@@ -161,27 +202,28 @@ class _Intro extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Previous Medical Records',
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 35,
-            fontWeight: FontWeight.w400,
-            color: Color(0xFF111216),
-          ),
+          style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                fontWeight: FontWeight.w500,
+                color: colorScheme.onSurface,
+                height: 1.15,
+              ),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 12),
         Text(
-          'Uploading your past records helps us provide\nbetter care. Our system will automatically read and\norganize them.',
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 20,
-            height: 1.55,
-            color: Color(0xFF454652),
-          ),
+          'Uploading your past records helps us provide '
+          'better care. Our system will automatically read '
+          'and organize them.',
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+                height: 1.5,
+              ),
         ),
       ],
     );
@@ -197,86 +239,65 @@ class _UploadArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 24,
-        vertical: 38,
-      ),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF7F7FA),
-        borderRadius: BorderRadius.circular(30),
-        border: Border.all(
-          color: const Color(0xFFC7C8D8),
-          width: 3,
-          style: BorderStyle.solid,
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Card(
+      margin: EdgeInsets.zero,
+      color: colorScheme.surfaceContainerLow,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(28),
+        side: BorderSide(
+          color: colorScheme.outlineVariant,
         ),
       ),
-      child: Column(
-        children: [
-          Container(
-            width: 102,
-            height: 102,
-            decoration: const BoxDecoration(
-              color: Color(0xFF5E70CE),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.file_upload_outlined,
-              color: Colors.white,
-              size: 47,
-            ),
-          ),
-          const SizedBox(height: 28),
-          const Text(
-            'Scan or upload a document',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 24,
-              fontWeight: FontWeight.w400,
-              color: Color(0xFF111216),
-            ),
-          ),
-          const SizedBox(height: 10),
-          const Text(
-            'PDF, JPG, PNG up to 10MB',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 17,
-              color: Color(0xFF454652),
-            ),
-          ),
-          const SizedBox(height: 30),
-          SizedBox(
-            height: 60,
-            child: FilledButton.icon(
-              onPressed: onAddDocument,
-              icon: const Icon(
-                Icons.add,
-                size: 29,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 32,
+        ),
+        child: Column(
+          children: [
+            Container(
+              width: 96,
+              height: 96,
+              decoration: BoxDecoration(
+                color: colorScheme.primaryContainer,
+                shape: BoxShape.circle,
               ),
-              label: const Text(
-                'Add document',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              style: FilledButton.styleFrom(
-                backgroundColor: const Color(0xFF4D5FBE),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32),
-                ),
+              child: Icon(
+                Icons.file_upload_outlined,
+                color: colorScheme.onPrimaryContainer,
+                size: 44,
               ),
             ),
-          ),
-        ],
+            const SizedBox(height: 24),
+            Text(
+              'Scan or upload a document',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w500,
+                    color: colorScheme.onSurface,
+                  ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'PDF, JPG, PNG up to 10MB',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+            ),
+            const SizedBox(height: 24),
+            SizedBox(
+              height: 56,
+              child: FilledButton.icon(
+                onPressed: onAddDocument,
+                icon: const Icon(Icons.add),
+                label: const Text('Add document'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -293,296 +314,137 @@ class _DocumentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     final isImage = document.type == _DocumentType.image;
 
-    return Container(
-      width: double.infinity,
-      height: 146,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 18,
+    final iconBackground = isImage
+        ? colorScheme.secondaryContainer
+        : colorScheme.primaryContainer;
+
+    final iconForeground = isImage
+        ? colorScheme.onSecondaryContainer
+        : colorScheme.onPrimaryContainer;
+
+    return Card(
+      margin: EdgeInsets.zero,
+      color: colorScheme.surfaceContainerLow,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(22),
       ),
-      decoration: BoxDecoration(
-        color: const Color(0xFFEDEDF1),
-        borderRadius: BorderRadius.circular(24),
-        border: const Border(
-          left: BorderSide(
-            color: Color(0xFF5066B9),
-            width: 5,
-          ),
-        ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 76,
-            height: 76,
-            decoration: BoxDecoration(
-              color: isImage
-                  ? const Color(0xFFE2E2E7)
-                  : const Color(0xFFB9CBFF),
-              borderRadius: BorderRadius.circular(14),
+      child: Padding(
+        padding: const EdgeInsets.all(18),
+        child: Row(
+          children: [
+            Container(
+              width: 64,
+              height: 64,
+              decoration: BoxDecoration(
+                color: iconBackground,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Icon(
+                isImage
+                    ? Icons.image_outlined
+                    : Icons.description_outlined,
+                size: 32,
+                color: iconForeground,
+              ),
             ),
-            child: Icon(
-              isImage
-                  ? Icons.image_outlined
-                  : Icons.description_outlined,
-              size: 39,
-              color: const Color(0xFF5066B9),
-            ),
-          ),
-          const SizedBox(width: 20),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  document.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 19,
-                    color: Color(0xFF111216),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    document.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w500,
+                          color: colorScheme.onSurface,
+                        ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Text(
-                      document.size,
-                      style: const TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 16,
-                        color: Color(0xFF454652),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Text(
+                        document.size,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: colorScheme.onSurfaceVariant,
+                            ),
                       ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 9),
-                      child: Text(
-                        '•',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Color(0xFFB6B6C0),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                        ),
+                        child: Text(
+                          '•',
+                          style: TextStyle(
+                            color: colorScheme.outline,
+                          ),
                         ),
                       ),
-                    ),
-                    const Icon(
-                      Icons.check_circle_outline,
-                      size: 19,
-                      color: Color(0xFF3857C2),
-                    ),
-                    const SizedBox(width: 5),
-                    const Text(
-                      'Processed',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 16,
-                        color: Color(0xFF3857C2),
+                      Icon(
+                        Icons.check_circle_outline,
+                        size: 18,
+                        color: colorScheme.primary,
                       ),
+                      const SizedBox(width: 5),
+                      Text(
+                        'Processed',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: colorScheme.primary,
+                              fontWeight: FontWeight.w500,
+                            ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: colorScheme.secondaryContainer,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    'AI SCANNED',
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: colorScheme.onSecondaryContainer,
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                ),
+                const SizedBox(height: 14),
+                PopupMenuButton<String>(
+                  onSelected: (value) {
+                    if (value == 'delete') {
+                      onDelete();
+                    }
+                  },
+                  icon: Icon(
+                    Icons.more_vert,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                  itemBuilder: (context) => const [
+                    PopupMenuItem(
+                      value: 'delete',
+                      child: Text('Remove'),
                     ),
                   ],
                 ),
               ],
             ),
-          ),
-          Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 11,
-                  vertical: 7,
-                ),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF6B7BA5),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Text(
-                  'AI SCANNED',
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              const Spacer(),
-              PopupMenuButton<String>(
-                onSelected: (value) {
-                  if (value == 'delete') {
-                    onDelete();
-                  }
-                },
-                icon: const Icon(
-                  Icons.more_vert,
-                  color: Color(0xFF393A44),
-                ),
-                itemBuilder: (context) => const [
-                  PopupMenuItem(
-                    value: 'delete',
-                    child: Text('Remove'),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _BottomArea extends StatelessWidget {
-  const _BottomArea();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          padding: const EdgeInsets.fromLTRB(32, 18, 32, 20),
-          color: const Color(0xFFF9F9FD),
-          child: SizedBox(
-            width: double.infinity,
-            height: 62,
-            child: FilledButton(
-              onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  '/patient/case',
-                );
-              },
-              style: FilledButton.styleFrom(
-                backgroundColor: const Color(0xFF4D5FBE),
-                foregroundColor: Colors.white,
-                elevation: 3,
-                shadowColor: Colors.black.withValues(
-                  alpha: 0.18,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(34),
-                ),
-              ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Continue to Review',
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  SizedBox(width: 15),
-                  Icon(
-                    Icons.arrow_forward_rounded,
-                    size: 29,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        const _PatientNavigationBar(),
-      ],
-    );
-  }
-}
-
-class _PatientNavigationBar extends StatelessWidget {
-  const _PatientNavigationBar();
-
-  static const items = [
-    (Icons.home_outlined, 'Home'),
-    (Icons.medical_services_outlined, 'Case'),
-    (Icons.chat_bubble_outline, 'Chat'),
-    (Icons.description_outlined, 'Records'),
-    (Icons.account_circle_outlined, 'Profile'),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 86,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      decoration: const BoxDecoration(
-        color: Color(0xFFF9F9FD),
-        border: Border(
-          top: BorderSide(
-            color: Color(0xFFEDEDF1),
-          ),
-        ),
-      ),
-      child: Row(
-        children: List.generate(
-          items.length,
-          (index) {
-            final item = items[index];
-            final selected = index == 1;
-
-            return Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  switch (index) {
-                    case 0:
-                      Navigator.pushReplacementNamed(
-                        context,
-                        '/patient',
-                      );
-                    case 1:
-                      break;
-                    case 2:
-                      Navigator.pushNamed(
-                        context,
-                        '/patient/chat',
-                      );
-                    case 3:
-                      Navigator.pushNamed(
-                        context,
-                        '/patient/records',
-                      );
-                    case 4:
-                      Navigator.pushNamed(
-                        context,
-                        '/patient/profile',
-                      );
-                  }
-                },
-                child: Container(
-                  height: 68,
-                  margin: const EdgeInsets.symmetric(horizontal: 3),
-                  decoration: BoxDecoration(
-                    color: selected
-                        ? const Color(0xFF5E6EC8)
-                        : Colors.transparent,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        item.$1,
-                        size: 28,
-                        color: const Color(0xFF292A35),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        item.$2,
-                        style: const TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 15,
-                          color: Color(0xFF292A35),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
+          ],
         ),
       ),
     );

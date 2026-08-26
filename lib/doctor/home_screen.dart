@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../app/widgets/doctor_navigation_bar.dart';
 
 class DoctorHomeScreen extends StatefulWidget {
   const DoctorHomeScreen({super.key});
@@ -9,7 +10,6 @@ class DoctorHomeScreen extends StatefulWidget {
 
 class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
   int selectedFilter = 0;
-  int selectedNavigation = 0;
 
   final patients = const [
     _Patient(
@@ -39,22 +39,29 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9FD),
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Column(
           children: [
             const _Header(),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(29, 43, 29, 120),
+                padding: const EdgeInsets.fromLTRB(
+                  24,
+                  28,
+                  24,
+                  120,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const _Greeting(),
-                    const SizedBox(height: 59),
+                    const SizedBox(height: 36),
                     const _Statistics(),
-                    const SizedBox(height: 58),
+                    const SizedBox(height: 36),
                     _PatientsHeader(
                       onViewAll: () {
                         Navigator.pushNamed(
@@ -63,7 +70,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
                         );
                       },
                     ),
-                    const SizedBox(height: 25),
+                    const SizedBox(height: 20),
                     _FilterBar(
                       selectedIndex: selectedFilter,
                       onSelected: (index) {
@@ -72,7 +79,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
                         });
                       },
                     ),
-                    const SizedBox(height: 37),
+                    const SizedBox(height: 24),
                     ...patients.map(
                       (patient) => Padding(
                         padding: const EdgeInsets.only(bottom: 16),
@@ -101,47 +108,41 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
             '/doctor/scan',
           );
         },
-        backgroundColor: const Color(0xFF4D5FBE),
-        foregroundColor: Colors.white,
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
         child: const Icon(
           Icons.add,
-          size: 38,
+          size: 30,
         ),
       ),
-      bottomNavigationBar: _DoctorNavigationBar(
-        selectedIndex: selectedNavigation,
+      bottomNavigationBar: DoctorNavigationBar(
+        selectedIndex: 0,
         onSelected: (index) {
-          setState(() {
-            selectedNavigation = index;
-          });
-
           switch (index) {
             case 0:
               break;
             case 1:
-              Navigator.pushNamed(
+              Navigator.pushReplacementNamed(
                 context,
                 '/doctor/scan',
               );
+              break;
             case 2:
-              Navigator.pushNamed(
+              Navigator.pushReplacementNamed(
                 context,
                 '/doctor/patients',
               );
+              break;
             case 3:
-              Navigator.pushNamed(
+              Navigator.pushReplacementNamed(
                 context,
                 '/doctor/chat',
               );
+              break;
             case 4:
-              Navigator.pushNamed(
+              Navigator.pushReplacementNamed(
                 context,
                 '/doctor/profile',
               );
+              break;
           }
         },
       ),
@@ -178,14 +179,16 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
-      height: 88,
-      padding: const EdgeInsets.symmetric(horizontal: 29),
-      decoration: const BoxDecoration(
-        color: Color(0xFFF9F9FD),
+      height: 80,
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
         border: Border(
           bottom: BorderSide(
-            color: Color(0xFFEDEDF1),
+            color: colorScheme.outlineVariant,
           ),
         ),
       ),
@@ -194,41 +197,34 @@ class _Header extends StatelessWidget {
           Container(
             width: 52,
             height: 52,
-            color: Colors.white,
-            child: const Icon(
+            decoration: BoxDecoration(
+              color: colorScheme.primaryContainer,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Icon(
               Icons.medical_information_outlined,
-              color: Color(0xFF5E6EC8),
+              color: colorScheme.onPrimaryContainer,
               size: 30,
             ),
           ),
           const SizedBox(width: 14),
-          const Text(
+          Text(
             'Doctor Home',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 31,
-              fontWeight: FontWeight.w400,
-              color: Color(0xFF111216),
-            ),
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  color: colorScheme.onSurface,
+                ),
           ),
           const Spacer(),
-          Container(
-            width: 58,
-            height: 58,
-            decoration: const BoxDecoration(
-              color: Color(0xFF4D5FBE),
-              shape: BoxShape.circle,
-            ),
-            child: const Center(
-              child: Text(
-                'AS',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                ),
-              ),
+          CircleAvatar(
+            radius: 25,
+            backgroundColor: colorScheme.primaryContainer,
+            child: Text(
+              'AS',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: colorScheme.onPrimaryContainer,
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
           ),
         ],
@@ -242,35 +238,33 @@ class _Greeting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Good morning, Dr. Sharma',
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 42,
-            fontWeight: FontWeight.w400,
-            color: Color(0xFF111216),
-            height: 1.15,
-          ),
+          style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                fontWeight: FontWeight.w400,
+                color: colorScheme.onSurface,
+                height: 1.15,
+              ),
         ),
-        SizedBox(height: 15),
+        const SizedBox(height: 12),
         Row(
           children: [
             Icon(
               Icons.medical_services_outlined,
-              size: 29,
-              color: Color(0xFF454652),
+              size: 27,
+              color: colorScheme.onSurfaceVariant,
             ),
-            SizedBox(width: 9),
+            const SizedBox(width: 9),
             Text(
               'General Medicine',
-              style: TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 24,
-                color: Color(0xFF454652),
-              ),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
             ),
           ],
         ),
@@ -284,24 +278,26 @@ class _Statistics extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Row(
       children: [
         Expanded(
           child: _StatisticCard(
             title: "TODAY'S PATIENTS",
             value: '24',
-            backgroundColor: const Color(0xFF5E70CE),
-            foregroundColor: Colors.white,
+            backgroundColor: colorScheme.primary,
+            foregroundColor: colorScheme.onPrimary,
             icon: Icons.person_outline,
           ),
         ),
-        const SizedBox(width: 29),
+        const SizedBox(width: 16),
         Expanded(
           child: _StatisticCard(
             title: 'PENDING REVIEWS',
             value: '6',
-            backgroundColor: const Color(0xFFB9CBFF),
-            foregroundColor: const Color(0xFF3D568F),
+            backgroundColor: colorScheme.primaryContainer,
+            foregroundColor: colorScheme.onPrimaryContainer,
             icon: Icons.description_outlined,
           ),
         ),
@@ -328,11 +324,16 @@ class _StatisticCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 202,
-      padding: const EdgeInsets.fromLTRB(29, 31, 20, 20),
+      height: 190,
+      padding: const EdgeInsets.fromLTRB(
+        24,
+        26,
+        20,
+        20,
+      ),
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(23),
+        borderRadius: BorderRadius.circular(24),
       ),
       child: Stack(
         children: [
@@ -341,23 +342,21 @@ class _StatisticCard extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 16,
-                  letterSpacing: 0.5,
-                  color: foregroundColor.withValues(alpha: 0.85),
-                ),
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      letterSpacing: 0.5,
+                      color: foregroundColor.withValues(
+                        alpha: 0.85,
+                      ),
+                    ),
               ),
               const Spacer(),
               Text(
                 value,
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 78,
-                  height: 0.95,
-                  fontWeight: FontWeight.w300,
-                  color: foregroundColor,
-                ),
+                style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                      fontWeight: FontWeight.w300,
+                      color: foregroundColor,
+                      height: 0.95,
+                    ),
               ),
             ],
           ),
@@ -366,8 +365,10 @@ class _StatisticCard extends StatelessWidget {
             top: -5,
             child: Icon(
               icon,
-              size: 95,
-              color: foregroundColor.withValues(alpha: 0.12),
+              size: 90,
+              color: foregroundColor.withValues(
+                alpha: 0.12,
+              ),
             ),
           ),
         ],
@@ -385,37 +386,25 @@ class _PatientsHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Row(
       children: [
-        const Text(
-          "Today's Patients",
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 32,
-            fontWeight: FontWeight.w400,
-            color: Color(0xFF111216),
+        Expanded(
+          child: Text(
+            "Today's Patients",
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  color: colorScheme.onSurface,
+                ),
           ),
         ),
-        const Spacer(),
-        TextButton(
+        TextButton.icon(
           onPressed: onViewAll,
-          child: const Row(
-            children: [
-              Text(
-                'View All',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 20,
-                  color: Color(0xFF334DB3),
-                ),
-              ),
-              SizedBox(width: 5),
-              Icon(
-                Icons.chevron_right_rounded,
-                size: 27,
-                color: Color(0xFF334DB3),
-              ),
-            ],
+          icon: const Text('View All'),
+          label: const Icon(
+            Icons.chevron_right_rounded,
+            size: 24,
           ),
         ),
       ],
@@ -434,62 +423,62 @@ class _FilterBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     const labels = [
-      '✓  All',
+      'All',
       'Ready',
       'Needs Review',
     ];
 
-    return Row(
-      children: List.generate(
-        labels.length,
-        (index) {
-          final selected = selectedIndex == index;
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: List.generate(
+          labels.length,
+          (index) {
+            final selected = selectedIndex == index;
 
-          return Padding(
-            padding: EdgeInsets.only(
-              right: index == labels.length - 1 ? 0 : 13,
-            ),
-            child: GestureDetector(
-              onTap: () => onSelected(index),
-              child: Container(
-                height: 57,
-                padding: const EdgeInsets.symmetric(horizontal: 28),
-                decoration: BoxDecoration(
-                  color: selected
-                      ? const Color(0xFFD7E1FF)
-                      : const Color(0xFFE8E8ED),
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (index == 2)
-                      Container(
-                        width: 14,
-                        height: 14,
-                        margin: const EdgeInsets.only(right: 8),
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFC71919),
+            return Padding(
+              padding: EdgeInsets.only(
+                right: index == labels.length - 1 ? 0 : 10,
+              ),
+              child: FilterChip(
+                selected: selected,
+                onSelected: (_) => onSelected(index),
+                label: Text(labels[index]),
+                avatar: index == 2
+                    ? Container(
+                        width: 10,
+                        height: 10,
+                        decoration: BoxDecoration(
+                          color: colorScheme.error,
                           shape: BoxShape.circle,
                         ),
-                      ),
-                    Text(
-                      labels[index],
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 18,
-                        color: selected
-                            ? const Color(0xFF111216)
-                            : const Color(0xFF202126),
-                      ),
-                    ),
-                  ],
+                      )
+                    : null,
+                backgroundColor:
+                    colorScheme.surfaceContainerHighest,
+                selectedColor:
+                    colorScheme.secondaryContainer,
+                checkmarkColor:
+                    colorScheme.onSecondaryContainer,
+                labelStyle: TextStyle(
+                  color: selected
+                      ? colorScheme.onSecondaryContainer
+                      : colorScheme.onSurfaceVariant,
+                  fontWeight: selected
+                      ? FontWeight.w600
+                      : FontWeight.w400,
+                ),
+                side: BorderSide.none,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -504,139 +493,173 @@ class _PatientCard extends StatelessWidget {
     required this.onTap,
   });
 
-  Color get statusBackground {
+  Color _statusBackground(
+    ColorScheme colorScheme,
+  ) {
     switch (patient.statusType) {
       case _PatientStatus.ready:
-        return const Color(0xFFD4DFFF);
+        return colorScheme.primaryContainer;
       case _PatientStatus.review:
-        return const Color(0xFFFFD4D0);
+        return colorScheme.errorContainer;
       case _PatientStatus.processing:
-        return const Color(0xFFE5E5EA);
+        return colorScheme.surfaceContainerHighest;
     }
   }
 
-  Color get statusForeground {
+  Color _statusForeground(
+    ColorScheme colorScheme,
+  ) {
     switch (patient.statusType) {
       case _PatientStatus.ready:
-        return const Color(0xFF304A9E);
+        return colorScheme.onPrimaryContainer;
       case _PatientStatus.review:
-        return const Color(0xFFB71C1C);
+        return colorScheme.onErrorContainer;
       case _PatientStatus.processing:
-        return const Color(0xFF454652);
+        return colorScheme.onSurfaceVariant;
+    }
+  }
+
+  IconData _statusIcon() {
+    switch (patient.statusType) {
+      case _PatientStatus.ready:
+        return Icons.verified_outlined;
+      case _PatientStatus.review:
+        return Icons.error_outline;
+      case _PatientStatus.processing:
+        return Icons.more_horiz;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 195,
-        padding: const EdgeInsets.fromLTRB(21, 21, 17, 20),
-        decoration: BoxDecoration(
-          color: const Color(0xFFEDEDF1),
-          borderRadius: BorderRadius.circular(22),
-        ),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                _PatientAvatar(patient: patient),
-                const SizedBox(width: 22),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        patient.name,
-                        style: const TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 25,
-                          color: Color(0xFF111216),
+    final colorScheme = Theme.of(context).colorScheme;
+    final statusBackground = _statusBackground(colorScheme);
+    final statusForeground = _statusForeground(colorScheme);
+
+    return Card(
+      margin: EdgeInsets.zero,
+      color: colorScheme.surfaceContainerLow,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(22),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(22),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(
+            18,
+            18,
+            14,
+            18,
+          ),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  _PatientAvatar(patient: patient),
+                  const SizedBox(width: 18),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment:
+                          CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          patient.name,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge
+                              ?.copyWith(
+                                fontWeight: FontWeight.w500,
+                                color: colorScheme.onSurface,
+                              ),
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        patient.details,
-                        style: const TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 18,
-                          color: Color(0xFF454652),
+                        const SizedBox(height: 4),
+                        Text(
+                          patient.details,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.copyWith(
+                                color:
+                                    colorScheme.onSurfaceVariant,
+                              ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Text(
-                  patient.time,
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 17,
-                    color: patient.statusType == _PatientStatus.review
-                        ? const Color(0xFFC71919)
-                        : const Color(0xFF343640),
+                  const SizedBox(width: 8),
+                  Text(
+                    patient.time,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(
+                          color: patient.statusType ==
+                                  _PatientStatus.review
+                              ? colorScheme.error
+                              : colorScheme.onSurfaceVariant,
+                        ),
                   ),
-                ),
-              ],
-            ),
-            const Spacer(),
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 15,
-                    vertical: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    color: statusBackground,
-                    borderRadius: BorderRadius.circular(13),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        patient.statusType == _PatientStatus.ready
-                            ? Icons.verified_outlined
-                            : patient.statusType == _PatientStatus.review
-                                ? Icons.error_outline
-                                : Icons.more_horiz,
-                        size: 20,
-                        color: statusForeground,
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        patient.status,
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 16,
+                ],
+              ),
+              const SizedBox(height: 18),
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 9,
+                    ),
+                    decoration: BoxDecoration(
+                      color: statusBackground,
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          _statusIcon(),
+                          size: 19,
                           color: statusForeground,
                         ),
+                        const SizedBox(width: 6),
+                        Text(
+                          patient.status,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelLarge
+                              ?.copyWith(
+                                color: statusForeground,
+                                fontWeight: FontWeight.w500,
+                              ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Spacer(),
+                  PopupMenuButton<String>(
+                    onSelected: (_) {},
+                    icon: Icon(
+                      Icons.more_vert,
+                      color: colorScheme.onSurfaceVariant,
+                      size: 27,
+                    ),
+                    itemBuilder: (context) => const [
+                      PopupMenuItem(
+                        value: 'view',
+                        child: Text('View patient'),
+                      ),
+                      PopupMenuItem(
+                        value: 'review',
+                        child: Text('Review records'),
                       ),
                     ],
                   ),
-                ),
-                const Spacer(),
-                PopupMenuButton<String>(
-                  onSelected: (_) {},
-                  icon: const Icon(
-                    Icons.more_vert,
-                    color: Color(0xFFB8B8C4),
-                    size: 29,
-                  ),
-                  itemBuilder: (context) => const [
-                    PopupMenuItem(
-                      value: 'view',
-                      child: Text('View patient'),
-                    ),
-                    PopupMenuItem(
-                      value: 'review',
-                      child: Text('Review records'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -652,104 +675,35 @@ class _PatientAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     if (patient.image == null) {
       return Container(
-        width: 86,
-        height: 86,
-        decoration: const BoxDecoration(
-          color: Color(0xFF5368AD),
+        width: 76,
+        height: 76,
+        decoration: BoxDecoration(
+          color: colorScheme.secondaryContainer,
           shape: BoxShape.circle,
         ),
-        child: const Center(
+        child: Center(
           child: Text(
             'SJ',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 23,
-              color: Colors.white,
-            ),
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge
+                ?.copyWith(
+                  color: colorScheme.onSecondaryContainer,
+                  fontWeight: FontWeight.w600,
+                ),
           ),
         ),
       );
     }
 
     return CircleAvatar(
-      radius: 43,
-      backgroundImage: NetworkImage(patient.image!),
-    );
-  }
-}
-
-class _DoctorNavigationBar extends StatelessWidget {
-  final int selectedIndex;
-  final ValueChanged<int> onSelected;
-
-  const _DoctorNavigationBar({
-    required this.selectedIndex,
-    required this.onSelected,
-  });
-
-  static const items = [
-    (Icons.grid_view_outlined, 'HOME'),
-    (Icons.qr_code_scanner_outlined, 'SCAN'),
-    (Icons.groups_outlined, 'PATIENTS'),
-    (Icons.chat_bubble_outline, 'CHAT'),
-    (Icons.account_box_outlined, 'PROFILE'),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 92,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      decoration: const BoxDecoration(
-        color: Color(0xFFF9F9FD),
-        border: Border(
-          top: BorderSide(
-            color: Color(0xFFEDEDF1),
-          ),
-        ),
-      ),
-      child: Row(
-        children: List.generate(
-          items.length,
-          (index) {
-            final item = items[index];
-            final selected = selectedIndex == index;
-
-            return Expanded(
-              child: GestureDetector(
-                onTap: () => onSelected(index),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      item.$1,
-                      size: 30,
-                      color: selected
-                          ? const Color(0xFF334DB3)
-                          : const Color(0xFF292A35),
-                    ),
-                    const SizedBox(height: 7),
-                    Text(
-                      item.$2,
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 14,
-                        fontWeight: selected
-                            ? FontWeight.w600
-                            : FontWeight.w400,
-                        color: selected
-                            ? const Color(0xFF334DB3)
-                            : const Color(0xFF292A35),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
+      radius: 38,
+      backgroundImage: NetworkImage(
+        patient.image!,
       ),
     );
   }

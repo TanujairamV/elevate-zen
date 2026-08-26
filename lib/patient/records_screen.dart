@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../app/widgets/patient_navigation_bar.dart';
 
 class PatientRecordsScreen extends StatefulWidget {
   const PatientRecordsScreen({super.key});
@@ -8,52 +9,50 @@ class PatientRecordsScreen extends StatefulWidget {
 }
 
 class _PatientRecordsScreenState extends State<PatientRecordsScreen> {
-  int selectedIndex = 2;
-
-  final tabs = const [
-    'History',
-    'Medications',
-    'Documents',
-  ];
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9FD),
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Column(
           children: [
             const _Header(),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(28, 24, 28, 32),
+                padding: const EdgeInsets.fromLTRB(24, 28, 24, 32),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const _PatientSummary(),
-                    const SizedBox(height: 48),
-                    const Text(
+                    const SizedBox(height: 36),
+                    Text(
                       'Medical Profile',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 24,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF111216),
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall
+                          ?.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: colorScheme.onSurface,
+                          ),
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 18),
                     const _MedicalProfileCard(),
-                    const SizedBox(height: 48),
-                    const Text(
+                    const SizedBox(height: 36),
+                    Text(
                       'Active Records',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 24,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF111216),
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall
+                          ?.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: colorScheme.onSurface,
+                          ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 18),
                     _RecordTabs(
                       selectedIndex: selectedIndex,
                       onSelected: (index) {
@@ -62,8 +61,9 @@ class _PatientRecordsScreenState extends State<PatientRecordsScreen> {
                         });
                       },
                     ),
-                    const SizedBox(height: 28),
+                    const SizedBox(height: 24),
                     _buildSelectedRecords(),
+                    const SizedBox(height: 90),
                   ],
                 ),
               ),
@@ -71,7 +71,39 @@ class _PatientRecordsScreenState extends State<PatientRecordsScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: const _PatientNavigationBar(),
+      bottomNavigationBar: PatientNavigationBar(
+        selectedIndex: 3,
+        onSelected: (index) {
+          switch (index) {
+            case 0:
+              Navigator.pushReplacementNamed(
+                context,
+                '/patient',
+              );
+              break;
+            case 1:
+              Navigator.pushReplacementNamed(
+                context,
+                '/patient/case',
+              );
+              break;
+            case 2:
+              Navigator.pushReplacementNamed(
+                context,
+                '/patient/chat',
+              );
+              break;
+            case 3:
+              break;
+            case 4:
+              Navigator.pushReplacementNamed(
+                context,
+                '/patient/profile',
+              );
+              break;
+          }
+        },
+      ),
     );
   }
 
@@ -94,40 +126,47 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
-      height: 88,
-      padding: const EdgeInsets.symmetric(horizontal: 28),
-      decoration: const BoxDecoration(
-        color: Color(0xFFF9F9FD),
+      height: 80,
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
         border: Border(
           bottom: BorderSide(
-            color: Color(0xFFEDEDF1),
+            color: colorScheme.outlineVariant,
           ),
         ),
       ),
       child: Row(
         children: [
           Container(
-            width: 46,
-            height: 46,
-            color: Colors.white,
-            child: const Icon(
+            width: 52,
+            height: 52,
+            decoration: BoxDecoration(
+              color: colorScheme.primaryContainer,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Icon(
               Icons.medical_information_outlined,
-              color: Color(0xFF5E6EC8),
-              size: 28,
+              color: colorScheme.onPrimaryContainer,
+              size: 30,
             ),
           ),
           const SizedBox(width: 14),
-          const Text(
-            'Patient Records',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 32,
-              fontWeight: FontWeight.w400,
-              color: Color(0xFF111216),
+          Expanded(
+            child: Text(
+              'Patient Records',
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineSmall
+                  ?.copyWith(
+                    fontWeight: FontWeight.w500,
+                    color: colorScheme.onSurface,
+                  ),
             ),
           ),
-          const Spacer(),
           const CircleAvatar(
             radius: 23,
             backgroundImage: NetworkImage(
@@ -145,63 +184,69 @@ class _PatientSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 22,
-        vertical: 23,
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Card(
+      margin: EdgeInsets.zero,
+      color: colorScheme.primaryContainer,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(28),
       ),
-      decoration: BoxDecoration(
-        color: const Color(0xFFE4E5F0),
-        borderRadius: BorderRadius.circular(32),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 92,
-            height: 92,
-            decoration: const BoxDecoration(
-              color: Color(0xFF5E70CE),
-              shape: BoxShape.circle,
-            ),
-            child: const Center(
-              child: Text(
-                'RK',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 24,
-                  color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(22),
+        child: Row(
+          children: [
+            Container(
+              width: 78,
+              height: 78,
+              decoration: BoxDecoration(
+                color: colorScheme.primary,
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Text(
+                  'RK',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(
+                        color: colorScheme.onPrimary,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(width: 22),
-          const Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Rahul Kumar',
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 23,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF111216),
+            const SizedBox(width: 20),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Rahul Kumar',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge
+                        ?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: colorScheme.onPrimaryContainer,
+                        ),
                   ),
-                ),
-                SizedBox(height: 5),
-                Text(
-                  '52 years • Male • O+',
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 19,
-                    color: Color(0xFF454652),
+                  const SizedBox(height: 5),
+                  Text(
+                    '52 years • Male • O+',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(
+                          color: colorScheme.onPrimaryContainer,
+                        ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -212,32 +257,37 @@ class _MedicalProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: const Color(0xFFF1F1F5),
-        borderRadius: BorderRadius.circular(32),
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Card(
+      margin: EdgeInsets.zero,
+      color: colorScheme.surfaceContainerLow,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(26),
       ),
       child: Column(
         children: [
           _ProfileItem(
             icon: Icons.badge_outlined,
-            iconBackground: const Color(0xFFB9CBFF),
+            iconBackground: colorScheme.primaryContainer,
+            iconColor: colorScheme.onPrimaryContainer,
             title: 'Personal Information',
             subtitle: 'Contact, Emergency, Addr...',
           ),
           const _ProfileDivider(),
           _ProfileItem(
             icon: Icons.monitor_heart_outlined,
-            iconBackground: const Color(0xFF6B7BA5),
+            iconBackground: colorScheme.secondaryContainer,
+            iconColor: colorScheme.onSecondaryContainer,
             title: 'Physical Vitals',
             subtitle: 'Height, Weight, BMI',
           ),
           const _ProfileDivider(),
           _ProfileItem(
             icon: Icons.coronavirus_outlined,
-            iconBackground: const Color(0xFFFFD0CD),
-            iconColor: const Color(0xFFB71C1C),
+            iconBackground: colorScheme.errorContainer,
+            iconColor: colorScheme.onErrorContainer,
             title: 'Allergies & Reactions',
             subtitle: 'Penicillin, Peanuts',
           ),
@@ -252,11 +302,13 @@ class _ProfileDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 22),
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 22),
       child: Divider(
         height: 1,
-        color: Color(0xFFDCDCE2),
+        color: colorScheme.outlineVariant,
       ),
     );
   }
@@ -265,70 +317,75 @@ class _ProfileDivider extends StatelessWidget {
 class _ProfileItem extends StatelessWidget {
   final IconData icon;
   final Color iconBackground;
-  final Color? iconColor;
+  final Color iconColor;
   final String title;
   final String subtitle;
 
   const _ProfileItem({
     required this.icon,
     required this.iconBackground,
+    required this.iconColor,
     required this.title,
     required this.subtitle,
-    this.iconColor,
   });
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 22,
-        vertical: 20,
+        vertical: 18,
       ),
       child: Row(
         children: [
           Container(
-            width: 58,
-            height: 58,
+            width: 56,
+            height: 56,
             decoration: BoxDecoration(
               color: iconBackground,
               shape: BoxShape.circle,
             ),
             child: Icon(
               icon,
-              size: 30,
-              color: iconColor ?? const Color(0xFF5066B9),
+              size: 29,
+              color: iconColor,
             ),
           ),
-          const SizedBox(width: 20),
+          const SizedBox(width: 18),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 20,
-                    color: Color(0xFF111216),
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium
+                      ?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: colorScheme.onSurface,
+                      ),
                 ),
                 const SizedBox(height: 5),
                 Text(
                   subtitle,
-                  style: const TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 18,
-                    color: Color(0xFF454652),
-                  ),
                   overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
                 ),
               ],
             ),
           ),
-          const Icon(
+          Icon(
             Icons.chevron_right_rounded,
-            size: 30,
-            color: Color(0xFF393A44),
+            size: 28,
+            color: colorScheme.onSurfaceVariant,
           ),
         ],
       ),
@@ -347,42 +404,44 @@ class _RecordTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    const tabs = [
+      'History',
+      'Medications',
+      'Documents',
+    ];
+
     return Row(
       children: List.generate(
-        3,
+        tabs.length,
         (index) {
           final selected = selectedIndex == index;
 
           return Expanded(
             child: Padding(
               padding: EdgeInsets.only(
-                right: index == 2 ? 0 : 10,
+                right: index == tabs.length - 1 ? 0 : 10,
               ),
-              child: GestureDetector(
-                onTap: () => onSelected(index),
-                child: Container(
-                  height: 56,
-                  decoration: BoxDecoration(
-                    color: selected
-                        ? const Color(0xFF4D5FBE)
-                        : const Color(0xFFE7E7EC),
-                    borderRadius: BorderRadius.circular(28),
+              child: FilledButton(
+                onPressed: () => onSelected(index),
+                style: FilledButton.styleFrom(
+                  minimumSize: const Size.fromHeight(52),
+                  backgroundColor: selected
+                      ? colorScheme.primary
+                      : colorScheme.surfaceContainerHighest,
+                  foregroundColor: selected
+                      ? colorScheme.onPrimary
+                      : colorScheme.onSurfaceVariant,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
                   ),
-                  child: Center(
-                    child: Text(
-                      [
-                        'History',
-                        'Medications',
-                        'Documents',
-                      ][index],
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 18,
-                        color: selected
-                            ? Colors.white
-                            : const Color(0xFF454652),
-                      ),
-                    ),
+                ),
+                child: Text(
+                  tabs[index],
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
@@ -399,79 +458,84 @@ class _HistoryRecords extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.fromLTRB(22, 22, 22, 25),
-          decoration: BoxDecoration(
-            color: const Color(0xFFEDEDF1),
-            borderRadius: BorderRadius.circular(32),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 68,
-                    height: 68,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFB9CBFF),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.favorite_border_rounded,
-                      color: Color(0xFF5066B9),
-                      size: 36,
-                    ),
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Card(
+      margin: EdgeInsets.zero,
+      color: colorScheme.surfaceContainerLow,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(26),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 62,
+                  height: 62,
+                  decoration: BoxDecoration(
+                    color: colorScheme.primaryContainer,
+                    shape: BoxShape.circle,
                   ),
-                  const SizedBox(width: 14),
-                  const Expanded(
-                    child: Text(
-                      'Hypertension\nDiagnosed 2018',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 19,
-                        height: 1.4,
-                        color: Color(0xFF202126),
-                      ),
-                    ),
+                  child: Icon(
+                    Icons.favorite_border_rounded,
+                    color: colorScheme.onPrimaryContainer,
+                    size: 33,
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 17,
-                      vertical: 9,
-                    ),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF5E6EC8),
-                      borderRadius: BorderRadius.circular(22),
-                    ),
-                    child: const Text(
-                      'Active',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 16,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 25),
-              const Text(
-                'Primary essential hypertension. Blood\npressure currently managed with daily...',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 17,
-                  height: 1.5,
-                  color: Color(0xFF454652),
                 ),
-              ),
-            ],
-          ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Text(
+                    'Hypertension\nDiagnosed 2018',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(
+                          height: 1.35,
+                          color: colorScheme.onSurface,
+                        ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    'Active',
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(
+                          color: colorScheme.onPrimaryContainer,
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 22),
+            Text(
+              'Primary essential hypertension. Blood pressure currently managed with daily...',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge
+                  ?.copyWith(
+                    height: 1.5,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
@@ -481,67 +545,79 @@ class _MedicationRecords extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(22),
-      decoration: BoxDecoration(
-        color: const Color(0xFFEDEDF1),
-        borderRadius: BorderRadius.circular(32),
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Card(
+      margin: EdgeInsets.zero,
+      color: colorScheme.surfaceContainerLow,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(26),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 68,
-                height: 68,
-                decoration: const BoxDecoration(
-                  color: Color(0xFF6B7BA5),
-                  shape: BoxShape.circle,
+      child: Padding(
+        padding: const EdgeInsets.all(22),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 64,
+                  height: 64,
+                  decoration: BoxDecoration(
+                    color: colorScheme.secondaryContainer,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.medication_outlined,
+                    color: colorScheme.onSecondaryContainer,
+                    size: 33,
+                  ),
                 ),
-                child: const Icon(
-                  Icons.medication_outlined,
-                  color: Colors.white,
-                  size: 34,
-                ),
-              ),
-              const SizedBox(width: 16),
-              const Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Amlodipine',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 20,
-                        color: Color(0xFF111216),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Amlodipine',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(
+                              fontWeight: FontWeight.w500,
+                              color: colorScheme.onSurface,
+                            ),
                       ),
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      '5mg • Once daily',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 17,
-                        color: Color(0xFF454652),
+                      const SizedBox(height: 5),
+                      Text(
+                        '5mg • Once daily',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(
+                              color: colorScheme.onSurfaceVariant,
+                            ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 22),
-          Row(
-            children: [
-              _MedicationTag('Morning'),
-              const SizedBox(width: 10),
-              _MedicationTag('With Food'),
-            ],
-          ),
-        ],
+              ],
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                const _MedicationTag(
+                  text: 'Morning',
+                ),
+                const SizedBox(width: 10),
+                const _MedicationTag(
+                  text: 'With Food',
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -550,26 +626,24 @@ class _MedicationRecords extends StatelessWidget {
 class _MedicationTag extends StatelessWidget {
   final String text;
 
-  const _MedicationTag(this.text);
+  const _MedicationTag({
+    required this.text,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 17,
-        vertical: 10,
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Chip(
+      label: Text(text),
+      backgroundColor: colorScheme.secondaryContainer,
+      labelStyle: TextStyle(
+        color: colorScheme.onSecondaryContainer,
+        fontWeight: FontWeight.w500,
       ),
-      decoration: BoxDecoration(
-        color: const Color(0xFFE1E1E6),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontFamily: 'Inter',
-          fontSize: 16,
-          color: Color(0xFF454652),
-        ),
+      side: BorderSide.none,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
       ),
     );
   }
@@ -580,157 +654,69 @@ class _DocumentRecords extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 22,
-        vertical: 22,
-      ),
-      decoration: BoxDecoration(
-        color: const Color(0xFFEDEDF1),
-        borderRadius: BorderRadius.circular(32),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 68,
-            height: 68,
-            decoration: const BoxDecoration(
-              color: Color(0xFFE2E2E7),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.description_outlined,
-              size: 34,
-              color: Color(0xFF353640),
-            ),
-          ),
-          const SizedBox(width: 16),
-          const Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Lipid Panel Report',
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 20,
-                    color: Color(0xFF111216),
-                  ),
-                ),
-                SizedBox(height: 5),
-                Text(
-                  'Oct 12, 2023 • Dr. Sharma',
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 16,
-                    color: Color(0xFF454652),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const Icon(
-            Icons.download_outlined,
-            size: 28,
-            color: Color(0xFF334DB3),
-          ),
-        ],
-      ),
-    );
-  }
-}
+    final colorScheme = Theme.of(context).colorScheme;
 
-class _PatientNavigationBar extends StatelessWidget {
-  const _PatientNavigationBar();
-
-  static const items = [
-    (Icons.home_outlined, 'Home'),
-    (Icons.medical_services_outlined, 'Case'),
-    (Icons.chat_bubble_outline, 'Chat'),
-    (Icons.description_outlined, 'Records'),
-    (Icons.account_circle_outlined, 'Profile'),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 86,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      decoration: const BoxDecoration(
-        color: Color(0xFFF9F9FD),
-        border: Border(
-          top: BorderSide(
-            color: Color(0xFFEDEDF1),
-          ),
+    return Card(
+      margin: EdgeInsets.zero,
+      color: colorScheme.surfaceContainerLow,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(26),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 20,
         ),
-      ),
-      child: Row(
-        children: List.generate(
-          items.length,
-          (index) {
-            final item = items[index];
-            final selected = index == 3;
-
-            return Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  switch (index) {
-                    case 0:
-                      Navigator.pushReplacementNamed(
-                        context,
-                        '/patient',
-                      );
-                    case 1:
-                      Navigator.pushNamed(
-                        context,
-                        '/patient/case',
-                      );
-                    case 2:
-                      Navigator.pushNamed(
-                        context,
-                        '/patient/chat',
-                      );
-                    case 3:
-                      break;
-                    case 4:
-                      Navigator.pushNamed(
-                        context,
-                        '/patient/profile',
-                      );
-                  }
-                },
-                child: Container(
-                  height: 68,
-                  margin: const EdgeInsets.symmetric(horizontal: 3),
-                  decoration: BoxDecoration(
-                    color: selected
-                        ? const Color(0xFF5E6EC8)
-                        : Colors.transparent,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        item.$1,
-                        size: 28,
-                        color: const Color(0xFF292A35),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        item.$2,
-                        style: const TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 15,
-                          color: Color(0xFF292A35),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+        child: Row(
+          children: [
+            Container(
+              width: 64,
+              height: 64,
+              decoration: BoxDecoration(
+                color: colorScheme.surfaceContainerHighest,
+                shape: BoxShape.circle,
               ),
-            );
-          },
+              child: Icon(
+                Icons.description_outlined,
+                size: 32,
+                color: colorScheme.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Lipid Panel Report',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(
+                          fontWeight: FontWeight.w500,
+                          color: colorScheme.onSurface,
+                        ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    'Oct 12, 2023 • Dr. Sharma',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              Icons.download_outlined,
+              size: 27,
+              color: colorScheme.primary,
+            ),
+          ],
         ),
       ),
     );

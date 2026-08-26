@@ -8,6 +8,7 @@ import '../patient/previous_records_screen.dart';
 import '../doctor/home_screen.dart';
 import '../doctor/patients_screen.dart';
 import '../doctor/patient_screen.dart';
+import '../doctor/profile_screen.dart';
 
 class ElevateZenRouter {
   static const String login = '/';
@@ -107,9 +108,7 @@ class ElevateZenRouter {
 
       case doctorProfile:
         return MaterialPageRoute(
-          builder: (_) => const _PlaceholderScreen(
-            title: 'Doctor Profile',
-          ),
+          builder: (_) => const DoctorProfileScreen(),
           settings: settings,
         );
 
