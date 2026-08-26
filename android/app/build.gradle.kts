@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.techtonic.elevate_zen"
+    namespace = "com.techtonic.elevatezen"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
