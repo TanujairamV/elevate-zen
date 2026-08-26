@@ -1,18 +1,30 @@
-import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'router.dart';
 
 class ElevateZenApp extends StatelessWidget {
   const ElevateZenApp({super.key});
 
+  ColorScheme _lightScheme() {
+    return ColorScheme.fromSeed(
+      seedColor: const Color(0xFF4E7A58),
+      brightness: Brightness.light,
+    );
+  }
+
+  ColorScheme _darkScheme() {
+    return ColorScheme.fromSeed(
+      seedColor: const Color(0xFFA7D5AE),
+      brightness: Brightness.dark,
+    );
+  }
+
   ThemeData _buildTheme(
     ColorScheme colorScheme,
-    Brightness brightness,
   ) {
     return ThemeData(
       useMaterial3: true,
-      brightness: brightness,
       colorScheme: colorScheme,
+      brightness: colorScheme.brightness,
       fontFamily: 'Inter',
       scaffoldBackgroundColor: colorScheme.surface,
       appBarTheme: AppBarTheme(
@@ -84,7 +96,8 @@ class ElevateZenApp extends StatelessWidget {
         indicatorColor: colorScheme.secondaryContainer,
         elevation: 0,
         height: 80,
-        labelTextStyle: WidgetStateProperty.resolveWith(
+        labelTextStyle:
+            WidgetStateProperty.resolveWith<TextStyle>(
           (states) {
             if (states.contains(WidgetState.selected)) {
               return TextStyle(
@@ -99,7 +112,8 @@ class ElevateZenApp extends StatelessWidget {
             );
           },
         ),
-        iconTheme: WidgetStateProperty.resolveWith(
+        iconTheme:
+            WidgetStateProperty.resolveWith<IconThemeData>(
           (states) {
             if (states.contains(WidgetState.selected)) {
               return IconThemeData(
@@ -125,7 +139,8 @@ class ElevateZenApp extends StatelessWidget {
           fontWeight: FontWeight.w500,
         ),
       ),
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
+      floatingActionButtonTheme:
+          FloatingActionButtonThemeData(
         backgroundColor: colorScheme.primaryContainer,
         foregroundColor: colorScheme.onPrimaryContainer,
         elevation: 2,
@@ -136,46 +151,16 @@ class ElevateZenApp extends StatelessWidget {
     );
   }
 
-  ColorScheme _fallbackLightScheme() {
-    return ColorScheme.fromSeed(
-      seedColor: const Color(0xFF4E7A58),
-      brightness: Brightness.light,
-    );
-  }
-
-  ColorScheme _fallbackDarkScheme() {
-    return ColorScheme.fromSeed(
-      seedColor: const Color(0xFFA7D5AE),
-      brightness: Brightness.dark,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return DynamicColorBuilder(
-      builder: (lightDynamic, darkDynamic) {
-        final lightScheme =
-            lightDynamic ?? _fallbackLightScheme();
-
-        final darkScheme =
-            darkDynamic ?? _fallbackDarkScheme();
-
-        return MaterialApp(
-          title: 'Elevate Zen',
-          debugShowCheckedModeBanner: false,
-          theme: _buildTheme(
-            lightScheme,
-            Brightness.light,
-          ),
-          darkTheme: _buildTheme(
-            darkScheme,
-            Brightness.dark,
-          ),
-          themeMode: ThemeMode.system,
-          initialRoute: ElevateZenRouter.login,
-          onGenerateRoute: ElevateZenRouter.onGenerateRoute,
-        );
-      },
+    return MaterialApp(
+      title: 'Elevate Zen',
+      debugShowCheckedModeBanner: false,
+      theme: _buildTheme(_lightScheme()),
+      darkTheme: _buildTheme(_darkScheme()),
+      themeMode: ThemeMode.system,
+      initialRoute: ElevateZenRouter.login,
+      onGenerateRoute: ElevateZenRouter.onGenerateRoute,
     );
   }
 }

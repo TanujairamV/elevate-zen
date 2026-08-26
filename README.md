@@ -15,7 +15,7 @@ sudo pacman -S git
 ### 2. Install Flutter
 
 ```bash
-sudo pacman -S flutter
+yay pacman -S flutter-bin
 ```
 
 ### 3. Install VS Code
