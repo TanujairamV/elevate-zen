@@ -1,4 +1,4 @@
-package com.techtonic.elevate_zen
+package com.techtonic.elevatezen
 
 import io.flutter.embedding.android.FlutterActivity
 
