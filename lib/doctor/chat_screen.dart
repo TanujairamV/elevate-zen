@@ -307,7 +307,7 @@ class _DoctorChatScreenState extends State<DoctorChatScreen> {
                         100,
                       ),
                       itemCount: items.length,
-                      separatorBuilder: (_, __) =>
+                      separatorBuilder: (_, _) =>
                           const SizedBox(height: 4),
                       itemBuilder: (context, index) {
                         final conversation = items[index];
