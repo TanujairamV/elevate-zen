@@ -111,13 +111,10 @@ class _Header extends StatelessWidget {
           CircleAvatar(
             radius: 24,
             backgroundColor: colorScheme.primaryContainer,
+            foregroundColor: colorScheme.onPrimaryContainer,
             child: Text(
-              'AS',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium
-                  ?.copyWith(
-                    color: colorScheme.onPrimaryContainer,
+              'C',
+              style: TextStyle(
                     fontWeight: FontWeight.w600,
                   ),
             ),
@@ -138,19 +135,25 @@ class _PatientHeader extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const CircleAvatar(
+         CircleAvatar(
           radius: 47,
-          backgroundImage: NetworkImage(
-            'https://i.pravatar.cc/150?img=12',
+          backgroundColor: colorScheme.primaryContainer,
+          foregroundColor: colorScheme.onPrimaryContainer,
+          child: Text(
+            'N',
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+              fontWeight: FontWeight.w600,
           ),
         ),
+      ),
+
         const SizedBox(width: 20),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Robert C. Vance',
+                'Nirunjhana',
                 style: Theme.of(context)
                     .textTheme
                     .headlineSmall
@@ -161,7 +164,7 @@ class _PatientHeader extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               Text(
-                '68 yrs • Male • ID: 8943-22X',
+                '45 yrs • Female • ID: 8943-22X',
                 style: Theme.of(context)
                     .textTheme
                     .bodyLarge
@@ -589,7 +592,7 @@ class _PrescriptionCard extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           Text(
-            'Nov 03, 2025 • Dr. Sarah Jenkins',
+            'Nov 03, 2025 • Dr. Chinmayi',
             style: Theme.of(context)
                 .textTheme
                 .bodyMedium

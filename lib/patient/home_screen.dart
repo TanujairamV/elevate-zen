@@ -115,10 +115,13 @@ class _Header extends StatelessWidget {
           ),
           const Spacer(),
           CircleAvatar(
-            radius: 26,
-            backgroundColor: colorScheme.surfaceContainerHighest,
-            backgroundImage: const NetworkImage(
-              'https://i.pravatar.cc/150?img=12',
+            backgroundColor: colorScheme.primaryContainer,
+            foregroundColor: colorScheme.onPrimaryContainer,
+            child: Text(
+              'N',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],
@@ -138,7 +141,7 @@ class _Greeting extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Hello, Rahul 👋',
+          'Hello, Nirunjana 👋',
           style: Theme.of(context).textTheme.displaySmall?.copyWith(
                 fontWeight: FontWeight.w500,
                 color: colorScheme.onSurface,
@@ -301,7 +304,7 @@ class _AppointmentSection extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Dr. Ananya Sharma',
+                        'Dr. Chinmayi',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                               fontWeight: FontWeight.w600,
                               color: colorScheme.onSurface,

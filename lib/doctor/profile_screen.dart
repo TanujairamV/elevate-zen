@@ -221,7 +221,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
               radius: 21,
               backgroundColor: colorScheme.primary,
               child: Text(
-                'AS',
+                'C',
                 style: Theme.of(context)
                     .textTheme
                     .titleMedium
@@ -310,7 +310,7 @@ class _ProfileHero extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  'AS',
+                  'C',
                   style: Theme.of(context)
                       .textTheme
                       .displaySmall
@@ -340,7 +340,7 @@ class _ProfileHero extends StatelessWidget {
         ),
         const SizedBox(height: 28),
         Text(
-          'Dr. Ananya Sharma',
+          'Dr. Chinmayi',
           textAlign: TextAlign.center,
           style: Theme.of(context)
               .textTheme
@@ -501,7 +501,7 @@ class _ContactInformation extends StatelessWidget {
           iconColor:
               colorScheme.onSurfaceVariant,
           label: 'Email',
-          value: 'dr.sharma@cityheart.edu',
+          value: 'dr.chinmayi@cityheart.edu',
           trailing: const Icon(
             Icons.chevron_right_rounded,
           ),

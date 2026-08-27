@@ -16,7 +16,7 @@ class _PreviousRecordsScreenState extends State<PreviousRecordsScreen> {
       type: _DocumentType.document,
     ),
     const _Document(
-      name: 'Prescription_DrSmith.jpg',
+      name: 'Nirunjhana_DrSmith.jpg',
       size: '1.1 MB',
       type: _DocumentType.image,
     ),
@@ -185,10 +185,15 @@ class _Header extends StatelessWidget {
                   ),
             ),
           ),
-          const CircleAvatar(
+          CircleAvatar(
             radius: 23,
-            backgroundImage: NetworkImage(
-              'https://i.pravatar.cc/150?img=12',
+            backgroundColor: colorScheme.primaryContainer,
+            foregroundColor: colorScheme.onPrimaryContainer,
+            child: const Text(
+              'N',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],

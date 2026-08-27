@@ -166,7 +166,7 @@ class _Header extends StatelessWidget {
             radius: 24,
             backgroundColor: colorScheme.primaryContainer,
             child: Text(
-              'AS',
+              'C',
               style: Theme.of(context)
                   .textTheme
                   .titleMedium

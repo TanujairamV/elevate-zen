@@ -167,10 +167,15 @@ class _Header extends StatelessWidget {
                   ),
             ),
           ),
-          const CircleAvatar(
+          CircleAvatar(
             radius: 23,
-            backgroundImage: NetworkImage(
-              'https://i.pravatar.cc/150?img=12',
+            backgroundColor: colorScheme.primaryContainer,
+            foregroundColor: colorScheme.onPrimaryContainer,
+            child: const Text(
+              'N',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],
@@ -206,7 +211,7 @@ class _PatientSummary extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  'RK',
+                  'N',
                   style: Theme.of(context)
                       .textTheme
                       .titleLarge
@@ -223,7 +228,7 @@ class _PatientSummary extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Rahul Kumar',
+                    'Nirunjhana',
                     style: Theme.of(context)
                         .textTheme
                         .titleLarge
@@ -234,7 +239,7 @@ class _PatientSummary extends StatelessWidget {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    '52 years • Male • O+',
+                    '45 years • Female • O+',
                     style: Theme.of(context)
                         .textTheme
                         .bodyLarge
@@ -700,7 +705,7 @@ class _DocumentRecords extends StatelessWidget {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    'Oct 12, 2023 • Dr. Sharma',
+                    'Oct 12, 2023 •  Previous Medical Report',
                     style: Theme.of(context)
                         .textTheme
                         .bodyMedium

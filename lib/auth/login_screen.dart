@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void _signIn() {
     final username = emailController.text.trim().toLowerCase();
 
-    if (username.contains('doctor')) {
+    if (username.contains('chinmayi')) {
       Navigator.pushReplacementNamed(context, '/doctor');
     } else {
       Navigator.pushReplacementNamed(context, '/patient');

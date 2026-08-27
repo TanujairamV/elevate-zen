@@ -82,20 +82,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                     Navigator.pop(context);
                   },
                 ),
-                ListTile(
-                  leading: const Icon(
-                    Icons.camera_alt_outlined,
-                  ),
-                  title: const Text(
-                    'Change profile photo',
-                  ),
-                  trailing: const Icon(
-                    Icons.chevron_right_rounded,
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
+
               ],
             ),
           ),
@@ -234,11 +221,14 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
             ),
             child: CircleAvatar(
               radius: 21,
-              backgroundImage: const NetworkImage(
-                'https://i.pravatar.cc/150?img=12',
+              backgroundColor: colorScheme.primaryContainer,
+              foregroundColor: colorScheme.onPrimaryContainer,
+              child: const Text(
+                'N',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                )
               ),
-              backgroundColor:
-                  colorScheme.primaryContainer,
             ),
           ),
         ],
@@ -324,12 +314,18 @@ class _ProfileHero extends StatelessWidget {
                   ),
                 ],
               ),
-              child: const CircleAvatar(
-                backgroundImage: NetworkImage(
-                  'https://i.pravatar.cc/150?img=12',
+              child: CircleAvatar(
+                backgroundColor: colorScheme.primaryContainer,
+                foregroundColor: colorScheme.onPrimaryContainer,
+                child: Text(
+                  'N',
+                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                    fontWeight: FontWeight.w500,
                 ),
               ),
             ),
+          ),
+
             Positioned(
               right: -2,
               bottom: -2,
@@ -337,7 +333,7 @@ class _ProfileHero extends StatelessWidget {
                 onPressed: onEdit,
                 elevation: 2,
                 child: const Icon(
-                  Icons.camera_alt_outlined,
+                  Icons.edit_outlined,
                 ),
               ),
             ),
@@ -345,7 +341,7 @@ class _ProfileHero extends StatelessWidget {
         ),
         const SizedBox(height: 26),
         Text(
-          'Rahul Kumar',
+          'Nirunjhana',
           textAlign: TextAlign.center,
           style: Theme.of(context)
               .textTheme
@@ -357,7 +353,7 @@ class _ProfileHero extends StatelessWidget {
         ),
         const SizedBox(height: 6),
         Text(
-          '52 yrs • Male • O+',
+          '45 yrs • Female • O+',
           style: Theme.of(context)
               .textTheme
               .titleMedium
@@ -397,7 +393,7 @@ class _PersonalInformation extends StatelessWidget {
       children: [
         _InformationRow(
           label: 'Email',
-          value: 'rahul.k@example.com',
+          value: 'nirunjhana@example.com',
           trailing: const Icon(
             Icons.chevron_right_rounded,
           ),

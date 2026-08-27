@@ -14,7 +14,7 @@ class _DoctorChatScreenState extends State<DoctorChatScreen> {
 
   final List<_Conversation> conversations = const [
     _Conversation(
-      name: 'Rahul Kumar',
+      name: 'Nirunjhana',
       message: 'Looking forward to our appointment...',
       time: '2m',
       avatarUrl: 'https://i.pravatar.cc/150?img=12',

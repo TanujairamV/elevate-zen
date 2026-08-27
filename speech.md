@@ -201,8 +201,6 @@ And that is how the technology behind Elevate Zen turns different forms of raw p
 
 ### Slide 4
 
-
-
 Now, because this involves healthcare, we didn't just ask ourselves whether the system can work.
 We also asked a much more important question:
 Where can it fail?

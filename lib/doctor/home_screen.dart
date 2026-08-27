@@ -13,12 +13,12 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
 
   final patients = const [
     _Patient(
-      name: 'Rahul Kumar',
-      details: '45M • ID: RK-8902',
+      name: 'Nirunjhana',
+      details: '45F • ID: RK-8902',
       time: '09:30 AM',
       status: 'Summary Ready',
       statusType: _PatientStatus.ready,
-      image: 'https://i.pravatar.cc/150?img=11',
+      initials: 'N',
     ),
     _Patient(
       name: 'Anita Rao',
@@ -26,7 +26,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
       time: '10:15 AM',
       status: 'Needs Review',
       statusType: _PatientStatus.review,
-      image: 'https://i.pravatar.cc/150?img=47',
+      initials: 'AR',
     ),
     _Patient(
       name: 'Sanjay Joshi',
@@ -34,6 +34,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
       time: '11:00 AM',
       status: 'Processing Scan',
       statusType: _PatientStatus.processing,
+      initials: 'SJ',
     ),
   ];
 
@@ -162,7 +163,7 @@ class _Patient {
   final String time;
   final String status;
   final _PatientStatus statusType;
-  final String? image;
+  final String initials;
 
   const _Patient({
     required this.name,
@@ -170,7 +171,7 @@ class _Patient {
     required this.time,
     required this.status,
     required this.statusType,
-    this.image,
+    required this.initials,
   });
 }
 
@@ -220,7 +221,7 @@ class _Header extends StatelessWidget {
             radius: 25,
             backgroundColor: colorScheme.primaryContainer,
             child: Text(
-              'AS',
+              'C',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: colorScheme.onPrimaryContainer,
                     fontWeight: FontWeight.w600,
@@ -244,7 +245,7 @@ class _Greeting extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Good morning, Dr. Sharma',
+          'Good morning, Dr. Chinmayi',
           style: Theme.of(context).textTheme.displaySmall?.copyWith(
                 fontWeight: FontWeight.w400,
                 color: colorScheme.onSurface,
@@ -677,34 +678,17 @@ class _PatientAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    if (patient.image == null) {
-      return Container(
-        width: 76,
-        height: 76,
-        decoration: BoxDecoration(
-          color: colorScheme.secondaryContainer,
-          shape: BoxShape.circle,
-        ),
-        child: Center(
-          child: Text(
-            'SJ',
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge
-                ?.copyWith(
-                  color: colorScheme.onSecondaryContainer,
-                  fontWeight: FontWeight.w600,
-                ),
+    return CircleAvatar(
+      radius: 38,
+      backgroundColor: colorScheme.secondaryContainer,
+      foregroundColor: colorScheme.onSecondaryContainer,
+      child: Text(
+          patient.initials,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: colorScheme.onSecondaryContainer,
+            fontWeight: FontWeight.w600,
           ),
         ),
       );
     }
-
-    return CircleAvatar(
-      radius: 38,
-      backgroundImage: NetworkImage(
-        patient.image!,
-      ),
-    );
-  }
 }
