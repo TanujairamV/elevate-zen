@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../app/widgets/doctor_navigation_bar.dart';
 
 class DoctorHomeScreen extends StatefulWidget {
   const DoctorHomeScreen({super.key});
@@ -90,6 +89,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
                             Navigator.pushNamed(
                               context,
                               '/doctor/patient',
+                              arguments: patient.initials,
                             );
                           },
                         ),
@@ -102,43 +102,19 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(
-            context,
-            '/doctor/scan',
-          );
-        },
-        child: const Icon(
-          Icons.add,
-          size: 30,
-        ),
-      ),
-      bottomNavigationBar: DoctorNavigationBar(
+      bottomNavigationBar: NavigationBar(
         selectedIndex: 0,
-        onSelected: (index) {
+        onDestinationSelected: (index) {
           switch (index) {
             case 0:
               break;
             case 1:
               Navigator.pushReplacementNamed(
                 context,
-                '/doctor/scan',
-              );
-              break;
-            case 2:
-              Navigator.pushReplacementNamed(
-                context,
                 '/doctor/patients',
               );
               break;
-            case 3:
-              Navigator.pushReplacementNamed(
-                context,
-                '/doctor/chat',
-              );
-              break;
-            case 4:
+            case 2:
               Navigator.pushReplacementNamed(
                 context,
                 '/doctor/profile',
@@ -146,6 +122,23 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
               break;
           }
         },
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home_rounded),
+            label: 'Home',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.people_alt_outlined),
+            selectedIcon: Icon(Icons.people_alt_rounded),
+            label: 'Patients',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person_outline_rounded),
+            selectedIcon: Icon(Icons.person_rounded),
+            label: 'Profile',
+          ),
+        ],
       ),
     );
   }

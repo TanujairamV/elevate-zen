@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../app/widgets/doctor_navigation_bar.dart';
 
 class DoctorProfileScreen extends StatefulWidget {
   const DoctorProfileScreen({super.key});
@@ -22,22 +21,10 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
       case 1:
         Navigator.pushReplacementNamed(
           context,
-          '/doctor/scan',
-        );
-        break;
-      case 2:
-        Navigator.pushReplacementNamed(
-          context,
           '/doctor/patients',
         );
         break;
-      case 3:
-        Navigator.pushReplacementNamed(
-          context,
-          '/doctor/chat',
-        );
-        break;
-      case 4:
+      case 2:
         break;
     }
   }
@@ -268,9 +255,26 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: DoctorNavigationBar(
-        selectedIndex: 4,
-        onSelected: _navigate,
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: 2,
+        onDestinationSelected: _navigate,
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home_rounded),
+            label: 'Home',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.people_alt_outlined),
+            selectedIcon: Icon(Icons.people_alt_rounded),
+            label: 'Patients',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person_outline_rounded),
+            selectedIcon: Icon(Icons.person_rounded),
+            label: 'Profile',
+          ),
+        ],
       ),
     );
   }

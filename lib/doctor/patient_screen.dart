@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../app/widgets/doctor_navigation_bar.dart';
 
 class DoctorPatientScreen extends StatelessWidget {
   const DoctorPatientScreen({super.key});
@@ -10,15 +9,9 @@ class DoctorPatientScreen extends StatelessWidget {
         Navigator.pushReplacementNamed(context, '/doctor');
         break;
       case 1:
-        Navigator.pushReplacementNamed(context, '/doctor/scan');
-        break;
-      case 2:
         Navigator.pushReplacementNamed(context, '/doctor/patients');
         break;
-      case 3:
-        Navigator.pushReplacementNamed(context, '/doctor/chat');
-        break;
-      case 4:
+      case 2:
         Navigator.pushReplacementNamed(context, '/doctor/profile');
         break;
     }
@@ -54,9 +47,26 @@ class DoctorPatientScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: DoctorNavigationBar(
-        selectedIndex: 2,
-        onSelected: (index) => _navigate(context, index),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: 1,
+        onDestinationSelected: (index) => _navigate(context, index),
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home_rounded),
+            label: 'Home',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.people_alt_outlined),
+            selectedIcon: Icon(Icons.people_alt_rounded),
+            label: 'Patients',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person_outline_rounded),
+            selectedIcon: Icon(Icons.person_rounded),
+            label: 'Profile',
+          ),
+        ],
       ),
     );
   }
@@ -98,7 +108,7 @@ class _Header extends StatelessWidget {
           const SizedBox(width: 14),
           Expanded(
             child: Text(
-              'Doctor Patients',
+              'Patient Review',
               style: Theme.of(context)
                   .textTheme
                   .headlineSmall
@@ -112,11 +122,11 @@ class _Header extends StatelessWidget {
             radius: 24,
             backgroundColor: colorScheme.primaryContainer,
             foregroundColor: colorScheme.onPrimaryContainer,
-            child: Text(
+            child: const Text(
               'C',
               style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                  ),
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],
@@ -135,18 +145,17 @@ class _PatientHeader extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-         CircleAvatar(
+        CircleAvatar(
           radius: 47,
           backgroundColor: colorScheme.primaryContainer,
           foregroundColor: colorScheme.onPrimaryContainer,
           child: Text(
             'N',
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w600,
+                ),
           ),
         ),
-      ),
-
         const SizedBox(width: 20),
         Expanded(
           child: Column(
@@ -164,7 +173,7 @@ class _PatientHeader extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               Text(
-                '45 yrs • Female • ID: 8943-22X',
+                '45 yrs • Female • ID: NR-8902',
                 style: Theme.of(context)
                     .textTheme
                     .bodyLarge
