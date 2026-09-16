@@ -6,6 +6,7 @@ import '../patient/chat_screen.dart';
 import '../patient/records_screen.dart';
 import '../patient/previous_records_screen.dart';
 import '../patient/profile_screen.dart';
+import '../patient/mental_wellness_screen.dart';
 import '../doctor/home_screen.dart';
 import '../doctor/patients_screen.dart';
 import '../doctor/profile_screen.dart';
@@ -20,6 +21,7 @@ class ElevateZenRouter {
   static const String patientRecords = '/patient/records';
   static const String previousRecords = '/patient/previous-records';
   static const String patientProfile = '/patient/profile';
+  static const String patientMentalWellness = '/patient/mental-wellness';
 
   static const String doctorHome = '/doctor';
   static const String doctorPatients = '/doctor/patients';
@@ -68,6 +70,12 @@ class ElevateZenRouter {
       case patientProfile:
         return MaterialPageRoute(
           builder: (_) => const PatientProfileScreen(),
+          settings: settings,
+        );
+      
+      case patientMentalWellness:
+        return MaterialPageRoute(
+          builder: (_) => const MentalWellnessScreen(),
           settings: settings,
         );
 

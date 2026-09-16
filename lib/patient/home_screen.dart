@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../app/widgets/patient_navigation_bar.dart';
+import 'widgets/mental_wellness_section.dart';
 
 class PatientHomeScreen extends StatelessWidget {
   const PatientHomeScreen({super.key});
@@ -23,6 +24,8 @@ class PatientHomeScreen extends StatelessWidget {
                     const _Greeting(),
                     const SizedBox(height: 32),
                     const _ConsultationCard(),
+                    const SizedBox(height: 28),
+                    const MentalWellnessSection(),
                     const SizedBox(height: 36),
                     const _AppointmentSection(),
                     const SizedBox(height: 36),
