@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../app/widgets/doctor_navigation_bar.dart';
 
 class DoctorPatientsScreen extends StatefulWidget {
   const DoctorPatientsScreen({super.key});
@@ -72,11 +73,20 @@ class _DoctorPatientsScreenState extends State<DoctorPatientsScreen> {
   void _navigate(int index) {
     switch (index) {
       case 0:
-        Navigator.pushReplacementNamed(context, '/doctor');
+        Navigator.pushReplacementNamed(
+          context, 
+          '/doctor'
+          );
         break;
       case 1:
         break;
       case 2:
+        Navigator.pushReplacementNamed(
+          context,
+          '/doctor/chat',
+        );
+        break;
+      case 3:
         Navigator.pushReplacementNamed(
           context,
           '/doctor/profile',
@@ -171,26 +181,9 @@ class _DoctorPatientsScreenState extends State<DoctorPatientsScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: NavigationBar(
+      bottomNavigationBar: DoctorNavigationBar(
         selectedIndex: 1,
-        onDestinationSelected: _navigate,
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home_rounded),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.people_alt_outlined),
-            selectedIcon: Icon(Icons.people_alt_rounded),
-            label: 'Patients',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person_outline_rounded),
-            selectedIcon: Icon(Icons.person_rounded),
-            label: 'Profile',
-          ),
-        ],
+        onSelected: _navigate,
       ),
     );
   }

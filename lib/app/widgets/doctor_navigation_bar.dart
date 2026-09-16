@@ -17,11 +17,6 @@ class DoctorNavigationBar extends StatelessWidget {
       label: 'Home',
     ),
     (
-      icon: Icons.qr_code_scanner_outlined,
-      selectedIcon: Icons.qr_code_scanner_rounded,
-      label: 'Scan',
-    ),
-    (
       icon: Icons.groups_outlined,
       selectedIcon: Icons.groups_rounded,
       label: 'Patients',
@@ -40,23 +35,34 @@ class DoctorNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return NavigationBar(
       selectedIndex: selectedIndex,
       onDestinationSelected: onSelected,
+      height: 80,
+      backgroundColor: colorScheme.surface,
+      surfaceTintColor: colorScheme.surfaceTint,
+      indicatorColor: colorScheme.secondaryContainer,
+      elevation: 0,
+      labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+      animationDuration: const Duration(milliseconds: 300),
       destinations: items.map(
         (item) {
           return NavigationDestination(
-            icon: Icon(item.icon),
-            selectedIcon: Icon(item.selectedIcon),
+            icon: Icon(
+              item.icon,
+              size: 24,
+            ),
+            selectedIcon: Icon(
+              item.selectedIcon,
+              size: 24,
+            ),
             label: item.label,
           );
         },
       ).toList(),
-      backgroundColor: colorScheme.surface,
-      surfaceTintColor: colorScheme.surfaceTint,
-      indicatorColor: colorScheme.secondaryContainer,
     );
   }
 }

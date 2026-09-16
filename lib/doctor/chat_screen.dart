@@ -88,18 +88,12 @@ class _DoctorChatScreenState extends State<DoctorChatScreen> {
       case 1:
         Navigator.pushReplacementNamed(
           context,
-          '/doctor/scan',
-        );
-        break;
-      case 2:
-        Navigator.pushReplacementNamed(
-          context,
           '/doctor/patients',
         );
         break;
-      case 3:
+      case 2:
         break;
-      case 4:
+      case 3:
         Navigator.pushReplacementNamed(
           context,
           '/doctor/profile',
@@ -333,7 +327,7 @@ class _DoctorChatScreenState extends State<DoctorChatScreen> {
         ),
       ),
       bottomNavigationBar: DoctorNavigationBar(
-        selectedIndex: 3,
+        selectedIndex: 2,
         onSelected: _navigate,
       ),
     );
