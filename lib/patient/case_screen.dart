@@ -217,15 +217,28 @@ class _PatientCaseScreenState extends State<PatientCaseScreen> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 28),
-            child: CircleAvatar(
-              radius: 23,
-              backgroundColor: colorScheme.primaryContainer,
-              foregroundColor: colorScheme.onPrimaryContainer,
-              child: const Text(
-                'N',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                )
+            child: IconButton(
+              tooltip: 'Profile',
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  '/patient/profile',
+                );
+              },
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(
+                minWidth: 50,
+                minHeight: 50,
+              ),
+              icon: CircleAvatar(
+                backgroundColor: colorScheme.primaryContainer,
+                foregroundColor: colorScheme.onPrimaryContainer,
+                child: Text(
+                  'N',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ),
             ),
           ),
@@ -1376,7 +1389,14 @@ class _ActionBar extends StatelessWidget {
     return Material(
       color: colorScheme.surface,
       elevation: 2,
-      child: Padding(
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: colorScheme.outlineVariant,
+            ),
+          ),
+        ),
         padding: const EdgeInsets.fromLTRB(28, 14, 28, 14),
         child: Row(
           children: [

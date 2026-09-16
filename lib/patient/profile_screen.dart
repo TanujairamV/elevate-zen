@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../app/widgets/patient_navigation_bar.dart';
 
 class PatientProfileScreen extends StatefulWidget {
   const PatientProfileScreen({super.key});
@@ -10,37 +9,6 @@ class PatientProfileScreen extends StatefulWidget {
 
 class _PatientProfileScreenState extends State<PatientProfileScreen> {
   bool notificationsEnabled = true;
-
-  void _navigate(int index) {
-    switch (index) {
-      case 0:
-        Navigator.pushReplacementNamed(
-          context,
-          '/patient',
-        );
-        break;
-      case 1:
-        Navigator.pushReplacementNamed(
-          context,
-          '/patient/case',
-        );
-        break;
-      case 2:
-        Navigator.pushReplacementNamed(
-          context,
-          '/patient/chat',
-        );
-        break;
-      case 3:
-        Navigator.pushReplacementNamed(
-          context,
-          '/patient/records',
-        );
-        break;
-      case 4:
-        break;
-    }
-  }
 
   void _editProfile() {
     showModalBottomSheet<void>(
@@ -177,7 +145,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         titleSpacing: 24,
         title: Row(
           children: [
@@ -272,10 +240,6 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: PatientNavigationBar(
-        selectedIndex: 4,
-        onSelected: _navigate,
       ),
     );
   }

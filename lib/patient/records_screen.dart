@@ -167,14 +167,28 @@ class _Header extends StatelessWidget {
                   ),
             ),
           ),
-          CircleAvatar(
-            radius: 23,
-            backgroundColor: colorScheme.primaryContainer,
-            foregroundColor: colorScheme.onPrimaryContainer,
-            child: const Text(
-              'N',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
+          IconButton(
+            tooltip: 'Profile',
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                '/patient/profile',
+              );
+            },
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(
+              minWidth: 50,
+              minHeight: 50,
+            ),
+            icon: CircleAvatar(
+              radius: 23,
+              backgroundColor: colorScheme.primaryContainer,
+              foregroundColor: colorScheme.onPrimaryContainer,
+              child: const Text(
+                'N',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ),

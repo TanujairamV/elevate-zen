@@ -10,38 +10,59 @@ class PatientNavigationBar extends StatelessWidget {
     required this.onSelected,
   });
 
+  static const items = [
+    (
+      icon: Icons.home_outlined,
+      selectedIcon: Icons.home_rounded,
+      label: 'Home',
+    ),
+    (
+      icon: Icons.medical_services_outlined,
+      selectedIcon: Icons.medical_services_rounded,
+      label: 'Case',
+    ),
+    (
+      icon: Icons.chat_bubble_outline_rounded,
+      selectedIcon: Icons.chat_bubble_rounded,
+      label: 'Chat',
+    ),
+    (
+      icon: Icons.description_outlined,
+      selectedIcon: Icons.description_rounded,
+      label: 'Records',
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return NavigationBar(
       selectedIndex: selectedIndex,
       onDestinationSelected: onSelected,
-      destinations: const [
-        NavigationDestination(
-          icon: Icon(Icons.home_outlined),
-          selectedIcon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.medical_services_outlined),
-          selectedIcon: Icon(Icons.medical_services),
-          label: 'Case',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.chat_bubble_outline),
-          selectedIcon: Icon(Icons.chat_bubble),
-          label: 'Chat',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.description_outlined),
-          selectedIcon: Icon(Icons.description),
-          label: 'Records',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.account_circle_outlined),
-          selectedIcon: Icon(Icons.account_circle),
-          label: 'Profile',
-        ),
-      ],
+      height: 80,
+      backgroundColor: colorScheme.surface,
+      surfaceTintColor: colorScheme.surfaceTint,
+      indicatorColor: colorScheme.secondaryContainer,
+      elevation: 0,
+      labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+      animationDuration: const Duration(milliseconds: 300),
+      destinations: items.map(
+        (item) {
+          return NavigationDestination(
+            icon: Icon(
+              item.icon,
+              size: 24,
+            ),
+            selectedIcon: Icon(
+              item.selectedIcon,
+              size: 24,
+            ),
+            label: item.label,
+          );
+        },
+      ).toList(),
     );
   }
 }
